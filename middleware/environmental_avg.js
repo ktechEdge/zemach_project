@@ -1,4 +1,7 @@
+const express = require('express');
+const router = express.Router();
 
+// Data access functions
 const getAllEnvironmentalAvgData = (callback) => {
     dbPool.query('SELECT * FROM environmental_data_avg', (err, rows) => {
         if (err) return callback(err);
@@ -26,12 +29,4 @@ const updateEnvironmentalAvgData = (id, data, callback) => {
 const deleteEnvironmentalAvgData = (id, callback) => {
     const sql = 'DELETE FROM environmental_data_avg WHERE id = ?';
     dbPool.query(sql, [id], callback);
-};
-
-module.exports = {
-    getAllEnvironmentalAvgData,
-    getEnvironmentalAvgDataById,
-    createEnvironmentalAvgData,
-    updateEnvironmentalAvgData,
-    deleteEnvironmentalAvgData
 };
