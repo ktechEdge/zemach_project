@@ -30,6 +30,13 @@ const createData = (data, callback) => {
         let cnt = result.length; // Default cnt value
         cnt ++; // Increment cnt value
 
+       // let max = ()=>{
+         //   let max = Number(result[result.length-1].soil_humidity);
+        //    if(max < Number(data.soil_humidity)) max = Number(data.soil_humidity);
+       //     return max;
+       // }
+
+
         const query = `
             INSERT INTO environmental_data (
                 device_id, uv_radiation, uv_radiation_max, uv_radiation_min,
@@ -84,6 +91,8 @@ const updateData = (id, data, callback) => {
 const deleteData = (id, callback) => {
     dbPool.query('DELETE FROM environmental_data WHERE id = ?', [id], callback);
 };
+
+
 
 module.exports = {
     getAllData,

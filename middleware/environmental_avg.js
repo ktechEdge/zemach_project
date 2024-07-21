@@ -1,62 +1,37 @@
-const environmentalAvgModel = require('../modules/environmental_avg');
 
-exports.createEnvironmentalAvgData = (req, res) => {
-    const data = req.body;
-    environmentalAvgModel.createEnvironmentalAvgData(data, (err, result) => {
-        if (err) {
-            console.error('Error creating environmental average data:', err);
-            return res.status(500).send('Error creating environmental average data');
-        }
-        res.status(201).send(result);
+const getAllEnvironmentalAvgData = (callback) => {
+    dbPool.query('SELECT * FROM environmental_data_avg', (err, rows) => {
+        if (err) return callback(err);
+        callback(null, rows);
     });
 };
 
-exports.getAllEnvironmentalAvgData = (req, res) => {
-    environmentalAvgModel.getAllEnvironmentalAvgData((err, results) => {
-        if (err) {
-            console.error('Error retrieving environmental average data:', err);
-            return res.status(500).send('Error retrieving environmental average data');
-        }
-        res.send(results);
+const getEnvironmentalAvgDataById = (id, callback) => {
+    dbPool.query('SELECT * FROM environmental_data_avg WHERE id = ?', [id], (err, rows) => {
+        if (err) return callback(err);
+        callback(null, rows[0]);
     });
 };
 
-exports.getEnvironmentalAvgDataById = (req, res) => {
-    environmentalAvgModel.getEnvironmentalAvgDataById(req.params.id, (err, result) => {
-        if (err) {
-            console.error('Error retrieving environmental average data by ID:', err);
-            return res.status(500).send('Error retrieving environmental average data by ID');
-        }
-        if (result.length === 0) {
-            return res.status(404).send('Environmental average data not found');
-        }
-        res.send(result);
-    });
+const createEnvironmentalAvgData = (data, callback) => {
+    const sql = 'INSERT INTO environmental_data_avg SET ?';
+    dbPool.query(sql, data, callback);
 };
 
-exports.updateEnvironmentalAvgData = (req, res) => {
-    const data = req.body;
-    environmentalAvgModel.updateEnvironmentalAvgData(req.params.id, data, (err, result) => {
-        if (err) {
-            console.error('Error updating environmental average data:', err);
-            return res.status(500).send('Error updating environmental average data');
-        }
-        if (result.affectedRows === 0) {
-            return res.status(404).send('Environmental average data not found');
-        }
-        res.send(result);
-    });
+const updateEnvironmentalAvgData = (id, data, callback) => {
+    const sql = 'UPDATE environmental_data_avg SET ? WHERE id = ?';
+    dbPool.query(sql, [data, id], callback);
 };
 
-exports.deleteEnvironmentalAvgData = (req, res) => {
-    environmentalAvgModel.deleteEnvironmentalAvgData(req.params.id, (err, result) => {
-        if (err) {
-            console.error('Error deleting environmental average data:', err);
-            return res.status(500).send('Error deleting environmental average data');
-        }
-        if (result.affectedRows === 0) {
-            return res.status(404).send('Environmental average data not found');
-        }
-        res.send(result);
-    });
+const deleteEnvironmentalAvgData = (id, callback) => {
+    const sql = 'DELETE FROM environmental_data_avg WHERE id = ?';
+    dbPool.query(sql, [id], callback);
+};
+
+module.exports = {
+    getAllEnvironmentalAvgData,
+    getEnvironmentalAvgDataById,
+    createEnvironmentalAvgData,
+    updateEnvironmentalAvgData,
+    deleteEnvironmentalAvgData
 };

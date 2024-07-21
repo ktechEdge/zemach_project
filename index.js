@@ -52,14 +52,12 @@ app.use('/arduino-devices', arduinoRoutes);
 const environmentalAvgRoutes = require('./routes/environmental_avg');
 app.use('/environmental-data-avg', environmentalAvgRoutes);
 
-const lastUpdateRoutes = require('./routes/lastupdate');
-app.use('/last-updates', lastUpdateRoutes);
+
 
 const plantRoutes = require('./routes/plant');
 app.use('/plants', plantRoutes);
 
-const globalParamRoutes = require('./routes/global_param');
-app.use('/global-parameters', globalParamRoutes);
+
 
 app.listen(port, () => {
     console.log(`Now listening on port http://localhost:${port}`);

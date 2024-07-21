@@ -2,137 +2,65 @@ const express = require('express');
 const router = express.Router();
 const environmentalAvgMiddleware = require('../middleware/environmental_avg');
 
-/**
- * @swagger
- * tags:
- *   name: EnvironmentalAvgData
- *   description: Environmental average data management
- */
+router.get('/', (req, res) => {
+    environmentalAvgMiddleware.getAllEnvironmentalAvgData((err, data) => {
+        if (err) {
+            console.error('Error retrieving environmental average data:', err);
+            return res.status(500).send('Error retrieving environmental average data');
+        }
+        res.send(data);
+    });
+});
 
-/**
- * @swagger
- * /environmental-data-avg:
- *   post:
- *     summary: Create a new environmental average data entry
- *     tags: [EnvironmentalAvgData]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               device_id:
- *                 type: integer
- *               uv_radiation:
- *                 type: integer
- *               light:
- *                 type: integer
- *               air_temperature:
- *                 type: number
- *               air_humidity:
- *                 type: integer
- *               soil_humidity:
- *                 type: integer
- *               measurement_date:
- *                 type: string
- *                 format: date-time
- *               plant_ID:
- *                 type: integer
- *     responses:
- *       200:
- *         description: The created environmental average data entry.
- */
-router.post('/', environmentalAvgMiddleware.createEnvironmentalAvgData);
+router.get('/:id', (req, res) => {
+    environmentalAvgMiddleware.getEnvironmentalAvgDataById(req.params.id, (err, data) => {
+        if (err) {
+            console.error('Error retrieving environmental average data by ID:', err);
+            return res.status(500).send('Error retrieving environmental average data by ID');
+        }
+        if (!data) {
+            return res.status(404).send('Environmental average data not found');
+        }
+        res.send(data);
+    });
+});
 
-/**
- * @swagger
- * /environmental-data-avg:
- *   get:
- *     summary: Get all environmental average data
- *     tags: [EnvironmentalAvgData]
- *     responses:
- *       200:
- *         description: List of all environmental average data entries
- */
-router.get('/', environmentalAvgMiddleware.getAllEnvironmentalAvgData);
+router.post('/', (req, res) => {
+    const data = req.body;
+    environmentalAvgMiddleware.createEnvironmentalAvgData(data, (err, result) => {
+        if (err) {
+            console.error('Error creating environmental average data:', err);
+            return res.status(500).send('Error creating environmental average data');
+        }
+        res.status(201).send(result);
+    });
+});
 
-/**
- * @swagger
- * /environmental-data-avg/{id}:
- *   get:
- *     summary: Get an environmental average data entry by ID
- *     tags: [EnvironmentalAvgData]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *     responses:
- *       200:
- *         description: The environmental average data entry
- */
-router.get('/:id', environmentalAvgMiddleware.getEnvironmentalAvgDataById);
+router.put('/:id', (req, res) => {
+    const data = req.body;
+    environmentalAvgMiddleware.updateEnvironmentalAvgData(req.params.id, data, (err, result) => {
+        if (err) {
+            console.error('Error updating environmental average data:', err);
+            return res.status(500).send('Error updating environmental average data');
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).send('Environmental average data not found');
+        }
+        res.send(result);
+    });
+});
 
-/**
- * @swagger
- * /environmental-data-avg/{id}:
- *   put:
- *     summary: Update an environmental average data entry by ID
- *     tags: [EnvironmentalAvgData]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               device_id:
- *                 type: integer
- *               uv_radiation:
- *                 type: integer
- *               light:
- *                 type: integer
- *               air_temperature:
- *                 type: number
- *               air_humidity:
- *                 type: integer
- *               soil_humidity:
- *                 type: integer
- *               measurement_date:
- *                 type: string
- *                 format: date-time
- *               plant_ID:
- *                 type: integer
- *     responses:
- *       200:
- *         description: The updated environmental average data entry
- */
-router.put('/:id', environmentalAvgMiddleware.updateEnvironmentalAvgData);
-
-/**
- * @swagger
- * /environmental-data-avg/{id}:
- *   delete:
- *     summary: Delete an environmental average data entry by ID
- *     tags: [EnvironmentalAvgData]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *     responses:
- *       200:
- *         description: The deleted environmental average data entry
- */
-router.delete('/:id', environmentalAvgMiddleware.deleteEnvironmentalAvgData);
+router.delete('/:id', (req, res) => {
+    environmentalAvgMiddleware.deleteEnvironmentalAvgData(req.params.id, (err, result) => {
+        if (err) {
+            console.error('Error deleting environmental average data:', err);
+            return res.status(500).send('Error deleting environmental average data');
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).send('Environmental average data not found');
+        }
+        res.send(result);
+    });
+});
 
 module.exports = router;
