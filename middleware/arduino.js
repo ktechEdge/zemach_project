@@ -1,5 +1,3 @@
-const dbPool = require('../dbPool');
-
 exports.createArduino = (req, res) => {
     const data = req.body;
     const sql = 'INSERT INTO arduino SET ?';
