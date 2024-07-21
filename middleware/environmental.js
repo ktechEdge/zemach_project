@@ -99,6 +99,7 @@ const createData = (data, callback) => {
     });
 };
 
+
 const updateData = (id, data, callback) => {
     const {
         device_id, uv_radiation, uv_radiation_max, uv_radiation_min,
