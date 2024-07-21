@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 18, 2024 at 06:56 PM
+-- Generation Time: Jul 21, 2024 at 06:34 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -41,7 +41,14 @@ CREATE TABLE `arduino` (
 
 INSERT INTO `arduino` (`id`, `device_id`, `plant_id_1`, `plant_id_2`, `plant_id_3`) VALUES
 (1, 1, 1, 2, 3),
-(2, 2, 4, 5, 6);
+(2, 2, 4, 5, 6),
+(3, 0, 0, 0, 0),
+(4, 0, 0, 0, 0),
+(5, 34, 1, 2, 3),
+(6, 0, 0, 0, 0),
+(7, 0, 0, 0, 0),
+(8, 1, 1, 2, 3),
+(9, 1, 1, 2, 3);
 
 -- --------------------------------------------------------
 
@@ -50,8 +57,8 @@ INSERT INTO `arduino` (`id`, `device_id`, `plant_id_1`, `plant_id_2`, `plant_id_
 --
 
 CREATE TABLE `environmental_data` (
-  `id` int(11) NOT NULL,
-  `device_id` int(11) DEFAULT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `device_id` int(11) NOT NULL,
   `uv_radiation` int(11) DEFAULT NULL,
   `uv_radiation_max` int(11) DEFAULT NULL,
   `uv_radiation_min` int(11) DEFAULT NULL,
@@ -61,26 +68,34 @@ CREATE TABLE `environmental_data` (
   `air_temperature` float DEFAULT NULL,
   `air_temperature_max` float DEFAULT NULL,
   `air_temperature_min` float DEFAULT NULL,
-  `air_humidity` int(11) DEFAULT NULL,
-  `air_humidity_max` int(11) DEFAULT NULL,
-  `air_humidity_min` int(11) DEFAULT NULL,
+  `air_humidity` float DEFAULT NULL,
+  `air_humidity_max` float DEFAULT NULL,
+  `air_humidity_min` float DEFAULT NULL,
   `soil_humidity` int(11) DEFAULT NULL,
   `soil_humidity_max` int(11) DEFAULT NULL,
   `soil_humidity_min` int(11) DEFAULT NULL,
-  `measurement_date` datetime DEFAULT NULL,
-  `measurement_date_max` datetime DEFAULT NULL,
-  `measurement_date_min` datetime DEFAULT NULL,
   `plant_ID` int(11) DEFAULT NULL,
-  `cnt` int(11) DEFAULT NULL
+  `cnt` int(11) DEFAULT NULL,
+  `measurement_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `environmental_data`
 --
 
-INSERT INTO `environmental_data` (`id`, `device_id`, `uv_radiation`, `uv_radiation_max`, `uv_radiation_min`, `light`, `light_max`, `light_min`, `air_temperature`, `air_temperature_max`, `air_temperature_min`, `air_humidity`, `air_humidity_max`, `air_humidity_min`, `soil_humidity`, `soil_humidity_max`, `soil_humidity_min`, `measurement_date`, `measurement_date_max`, `measurement_date_min`, `plant_ID`, `cnt`) VALUES
-(1, 1, 300, 320, 280, 1500, 1600, 1400, 25.5, 27, 24, 60, 65, 55, 30, 35, 25, '2024-07-18 10:00:00', '2024-07-18 12:00:00', '2024-07-18 08:00:00', 1, 1),
-(2, 2, 280, 300, 260, 1400, 1500, 1300, 24.5, 26, 23, 55, 60, 50, 28, 33, 23, '2024-07-18 11:00:00', '2024-07-18 13:00:00', '2024-07-18 09:00:00', 2, 1);
+INSERT INTO `environmental_data` (`id`, `device_id`, `uv_radiation`, `uv_radiation_max`, `uv_radiation_min`, `light`, `light_max`, `light_min`, `air_temperature`, `air_temperature_max`, `air_temperature_min`, `air_humidity`, `air_humidity_max`, `air_humidity_min`, `soil_humidity`, `soil_humidity_max`, `soil_humidity_min`, `plant_ID`, `cnt`, `measurement_date`) VALUES
+(1, 1, 300, 350, 250, 500, 550, 450, 25.5, 26, 25, 60.5, 65, 55, 700, 750, 650, 1, 1, '2024-07-21 09:00:00'),
+(2, 1, 300, 350, 250, 500, 550, 450, 25.5, 26, 25, 60.5, 65, 55, 700, 750, 650, 1, 2, '2024-07-21 09:00:00'),
+(3, 1, 300, 350, 250, 500, 550, 450, 25.5, 26, 25, 60.5, 65, 55, 700, 750, 650, 1, 3, '2024-07-21 09:00:00'),
+(4, 1, 300, 350, 250, 500, 550, 450, 25.5, 26, 25, 60.5, 65, 55, 700, 750, 650, 1, 4, '2024-07-21 09:00:00'),
+(5, 1, 300, 350, 250, 500, 550, 450, 25.5, 26, 25, 60.5, 65, 55, 700, 750, 650, 1, 5, '2024-07-21 09:00:00'),
+(6, 1, 300, 350, 250, 500, 550, 450, 25.5, 26, 25, 60.5, 65, 55, 700, 750, 650, 1, 6, '2024-07-21 09:00:00'),
+(7, 1, 300, 350, 250, 500, 550, 450, 25.5, 26, 25, 60.5, 65, 55, 700, 750, 650, 1, 7, '2024-07-21 09:00:00'),
+(8, 1, 300, 350, 250, 500, 550, 450, 25.5, 26, 25, 60.5, 65, 55, 700, 750, 650, 1, 8, '2024-07-21 09:00:00'),
+(9, 1, 300, 350, 250, 500, 550, 450, 25.5, 26, 25, 60.5, 65, 55, 700, 750, 650, 1, 9, '2024-07-21 09:00:00'),
+(10, 1, 300, 350, 250, 500, 550, 450, 25.5, 26, 25, 60.5, 65, 55, 700, 750, 650, 1, 10, '2024-07-21 09:00:00'),
+(11, 1, 300, 350, 250, 500, 550, 450, 25.5, 26, 25, 60.5, 65, 55, 700, 750, 650, 1, 11, '2024-07-21 09:00:00'),
+(12, 1, 300, 350, 250, 500, 550, 450, 25.5, 26, 25, 60.5, 65, 55, 700, 750, 650, 1, 12, '2024-07-21 09:00:00');
 
 -- --------------------------------------------------------
 
@@ -115,8 +130,8 @@ CREATE TABLE `environmental_data_avg` (
 --
 
 INSERT INTO `environmental_data_avg` (`id`, `device_id`, `uv_radiation`, `light`, `air_temperature`, `air_humidity`, `soil_humidity`, `measurement_date`, `plant_ID`, `uv_radiation_max`, `uv_radiation_min`, `light_max`, `light_min`, `air_temperature_max`, `air_temperature_min`, `air_humidity_max`, `air_humidity_min`, `soil_humidity_max`, `soil_humidity_min`) VALUES
-(1, 1, 300, 1500, 25.5, 60, 30, '2024-07-18 10:00:00', 1, 320, 280, 1600, 1400, 27, 24, 65, 55, 35, 25),
-(2, 2, 280, 1400, 24.5, 55, 28, '2024-07-18 11:00:00', 2, 300, 260, 1500, 1300, 26, 23, 60, 50, 33, 23);
+(1, 23, 300, 500, 25.5, 61, 700, '2024-07-21 17:59:33', NULL, 300, 300, 500, 500, 25.5, 25.5, 61, 61, 700, 700),
+(2, 1, 300, 500, 25.5, 61, 700, '2024-07-21 12:00:00', 1, 350, 250, 550, 450, 26, 25, 65, 55, 750, 650);
 
 -- --------------------------------------------------------
 
@@ -196,8 +211,7 @@ ALTER TABLE `arduino`
 -- Indexes for table `environmental_data`
 --
 ALTER TABLE `environmental_data`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `device_id` (`device_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `environmental_data_avg`
@@ -225,13 +239,13 @@ ALTER TABLE `plant`
 -- AUTO_INCREMENT for table `arduino`
 --
 ALTER TABLE `arduino`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `environmental_data`
 --
 ALTER TABLE `environmental_data`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `environmental_data_avg`
