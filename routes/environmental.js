@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const environmentalDataMiddleware = require('../middleware/environmental');
 
+
 // Get all environmental data
 router.get('/', (req, res) => {
     environmentalDataMiddleware.getAllData((err, data) => {
@@ -38,6 +39,7 @@ router.post('/', (req, res) => {
     });
 });
 
+
 // Update environmental data by ID
 router.put('/:id', (req, res) => {
     environmentalDataMiddleware.updateData(req.params.id, req.body, (err) => {
@@ -49,6 +51,7 @@ router.put('/:id', (req, res) => {
     });
 });
 
+
 // Delete environmental data by ID
 router.delete('/:id', (req, res) => {
     environmentalDataMiddleware.deleteData(req.params.id, (err) => {
@@ -59,5 +62,8 @@ router.delete('/:id', (req, res) => {
         res.send('Environmental data deleted');
     });
 });
+
+
+
 
 module.exports = router;
