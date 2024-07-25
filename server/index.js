@@ -14,7 +14,7 @@ app.use(express.static(path.join(__dirname)));
 let db_M = require('./database');
 global.db_pool = db_M.pool;
 
-const midd = require("./middlewere/get_device_Id");
+const midd = require("./middleware/get_device_Id");
 
 app.get("/", [midd.getID], function (req, res, next) {
     if (res.jisOK) {
@@ -27,4 +27,3 @@ app.get("/", [midd.getID], function (req, res, next) {
 app.listen(port, () => {
     console.log(`Now listening on port http://localhost:${port}`);
 });
-
