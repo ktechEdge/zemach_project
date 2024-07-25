@@ -22,6 +22,7 @@ const createEnvironmentalAvgData = (data, callback) => {
     } = data;
     const measurement_date = new Date(); // זמן עכשיו
 
+
     const avg = [
         device_id, uv_radiation, uv_radiation_max, uv_radiation_min,
         light, light_max, light_min, air_temperature, air_temperature_max,
