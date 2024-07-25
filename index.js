@@ -52,10 +52,11 @@ app.use('/arduino-devices', arduinoRoutes);
 const environmentalAvgRoutes = require('./routes/environmental_avg');
 app.use('/environmental-data-avg', environmentalAvgRoutes);
 
-
-
 const plantRoutes = require('./routes/plant');
 app.use('/plants', plantRoutes);
+
+const espRouter =  require('./routes/espRouter')
+app.use('/api-arduino', espRouter);
 
 
 
