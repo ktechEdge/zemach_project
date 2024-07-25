@@ -18,8 +18,9 @@ const createEnvironmentalAvgData = (data, callback) => {
         device_id, uv_radiation, uv_radiation_max, uv_radiation_min,
         light, light_max, light_min, air_temperature, air_temperature_max,
         air_temperature_min, air_humidity, air_humidity_max, air_humidity_min,
-        soil_humidity, soil_humidity_max, soil_humidity_min, plant_ID, measurement_date
+        soil_humidity, soil_humidity_max, soil_humidity_min, plant_ID
     } = data;
+    const measurement_date = new Date(); // זמן עכשיו
 
     const avg = [
         device_id, uv_radiation, uv_radiation_max, uv_radiation_min,
@@ -48,6 +49,7 @@ const updateEnvironmentalAvgData = (id, data, callback) => {
         air_temperature_min, air_humidity, air_humidity_max, air_humidity_min,
         soil_humidity, soil_humidity_max, soil_humidity_min, plant_ID, measurement_date
     } = data;
+
 
     const avg = [
         device_id, uv_radiation, uv_radiation_max, uv_radiation_min,
