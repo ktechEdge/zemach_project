@@ -1,0 +1,32 @@
+body{
+    display: grid;
+    /*grid-gap: 20px;*/
+    grid-template-columns: repeat(12,1fr);
+    grid-template-rows: 100px auto 50px;
+}
+header{
+    grid-column: 3/span 10;
+}
+footer{
+    grid-column: 1/span 12;
+}
+nav{
+    grid-column: 1/span 2;
+    grid-row: 1/span 2;
+}
+main{
+    grid-column: 3/span 10;
+    /*grid-column: 3/span 8;*/
+}
+aside{
+    /*grid-column: 11/span 2;*/
+}
+.mobile_menu{
+    display: none;
+}
+
+.tbl2col{
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: repeat(2,1fr);
+}
