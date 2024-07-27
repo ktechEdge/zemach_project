@@ -17,13 +17,9 @@ app.get("/",(req, res) => {
 app.get("/login",(req, res) => {
     res.render("login_page",{pageTitle:"עמוד התחברות"});
 });
-
-//-------------------------------------------------
 app.get("/table_tst",(req, res) => {
     res.render("TableTest",{pageTitle:"טבלה"});
 });
-
-//-------------------------------------------------
 app.listen(port, () => {            //server starts listening for any attempts from a client to connect at port: {port}
     console.log(`Now listening on port http://localhost:${port}`);
 });
