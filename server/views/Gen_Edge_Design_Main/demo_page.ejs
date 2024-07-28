@@ -18,33 +18,39 @@
         item.textContent = className;
     });
 
-    // Function to fetch device statuses from an API
     function fetchDeviceStatuses() {
-        return fetch('/api/device/status')
+        return fetch('/plants.json')
             .then(response => response.json())
-            .then(data => data.devices); // Assuming data is structured like { devices: [{ id: 1, status: 'ok' }, ...] }
+            .then(data => data);
     }
 
-    // Function to change the colors of the grids based on the fetched info
     function updateGridColors() {
         fetchDeviceStatuses()
-            .then(devices => {
-                devices.forEach(device => {
-                    const deviceClass = `.device-${device.id}`;
-                    const statusClass = device.status; // 'ok', 'disconnected', 'problem'
-
-                    // Remove existing status classes from grid items of this device
-                    document.querySelectorAll(deviceClass).forEach(item => {
-                        item.classList.remove('ok', 'disconnected', 'problem');
-                        item.classList.add(statusClass);
-                    });
+            .then(plants => {
+                plants.forEach(plant => {
+                    const gridItem = document.getElementById(plant.id);
+                    if (gridItem) {
+                        gridItem.classList.remove('connected', 'disconnected');
+                        gridItem.classList.add(plant.connected ? 'connected' : 'disconnected');
+                    }
                 });
             })
             .catch(error => {
-                console.error('Error fetching device statuses:', error);
+                console.error('Error fetching plant data:', error);
             });
     }
+
     updateGridColors();
 </script>
+
+<style>
+    .connected {
+        background-color: green;
+    }
+
+    .disconnected {
+        background-color: red;
+    }
+</style>
 
 <%- include ("page_bottom.ejs") %>
