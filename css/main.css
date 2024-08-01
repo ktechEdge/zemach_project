@@ -1,0 +1,101 @@
+@import "colors.css";
+@import "menu.css";
+@import "login.css";
+@import "struct.css" screen and (min-width: 1000px);
+@import "struct_mobile.css" screen and (max-width: 1000px);
+@import "mobile.css" screen and (max-width: 1000px);
+
+@font-face {
+    font-family: 'VarelaRound';
+    src: url('/fonts/VarelaRound-Regular.ttf') format('truetype');
+}
+
+body {
+    direction: rtl;
+    position: relative;
+    background-color: var(--footer_bg);
+    font-family: "VarelaRound";
+    font-size: 20px;
+}
+
+.sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+}
+
+.alignLeft {
+    text-align: left;
+}
+
+header h1 {
+    text-align: center;
+}
+
+footer p {
+    font-size: 80%;
+    line-height: 120%;
+}
+
+.ptr {
+    cursor: pointer;
+}
+
+aside h2 {
+    text-align: center;
+}
+
+#logo img {
+    width: 100%;
+}
+
+.plant-container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+}
+.grid-item {
+    padding: 10px;
+    border: 1px solid black;
+    text-align: center;
+}
+.ok {
+    background-color: green;
+}
+.disconnected {
+    background-color: red;
+}
+.problem {
+    background-color: yellow;
+}
+/* Media Queries for responsiveness */
+@media screen and (max-width: 1200px) {
+    .plant-container {
+        gap: 10px;
+        padding: 20px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .plant-container {
+        box-sizing: content-box;
+        gap: 10px;
+        padding: 15px;
+    }
+    .grid-item {
+        font-size: 18px;
+        padding: 20px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .plant-container {
+        grid-template-columns: repeat(3, 1fr); /* Adjust columns for extra small screens */
+        gap: 15px;
+        padding: 10px;
+    }
+    .grid-item {
+        font-size: 16px;
+        padding: 15px;
+    }
+}

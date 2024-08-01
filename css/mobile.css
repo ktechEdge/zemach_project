@@ -1,0 +1,47 @@
+#logo{display: none;}
+#mobile_logo{
+    display: inline-block;
+    position: absolute;
+    left: 10px;
+    height: 100%;
+}
+.mobile_menu{
+    position: fixed;
+    bottom: 0;
+    width:100%;
+    height: 10%;
+    min-height: 60px;
+    z-index: 1000;
+}
+.mobile_menu img{
+    margin: 10px;
+    height: 80%;
+}
+.tbl2col{
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: 1fr;
+}
+a.contact_btn{
+    background-color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 10px;
+    margin: 5%;
+    float: left;
+    margin-left: 20px;
+    font-size: 200%;
+}
+
+nav ul li a,cForm input,.cForm button,.cForm textarea,.cForm select{
+    font-size: 260%;
+    line-height: 150%;
+}
+.cForm input,.cForm button,.cForm textarea,.cForm select{
+min-height: 80px;
+}
+.LogoBar{
+    max-width: 40%;
+}
+
