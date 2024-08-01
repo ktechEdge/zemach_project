@@ -1,7 +1,5 @@
-const swaggerJsdoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
 const express = require('express');
-const port = 8080;
+const port = 4286;
 const app = express();
 
 app.use(express.json());
@@ -12,36 +10,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.set("view engine", "ejs");
 
 const path = require('path');
-app.use(express.static(path.join(__dirname, "css")));
-app.use(express.static(path.join(__dirname, "js")));
+app.use("/css",express.static(path.join(__dirname, "css")));
+app.use("/js" ,express.static(path.join(__dirname, "js")));
+app.use("/inc" ,express.static(path.join(__dirname, "inc")));
 
 const databaseConfig = require('./config/database');
 global.dbPool = databaseConfig.pool;
 
-// הגדרות Swagger
-const swaggerOptions = {
-    swaggerDefinition: {
-        openapi: '3.0.0',
-        info: {
-            title: 'Environmental Monitoring API',
-            version: '1.0.0',
-            description: 'API for managing environmental data and devices',
-        },
-        servers: [
-            {
-                url: `http://localhost:${port}`,
-            },
-        ],
-    },
-    apis: ['./routes/*.js'],
-};
-
-const swaggerDocs = swaggerJsdoc(swaggerOptions);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-
-app.get('/', function (req, res) {
-    res.send('Hello World');
-});
+//---------- routers ---------------------------------
+const FrontPages = require('./routes/FE_R');
+app.use('/', FrontPages);
 
 const environmentalDataRoutes = require('./routes/environmental');
 app.use('/environmental-data', environmentalDataRoutes);
