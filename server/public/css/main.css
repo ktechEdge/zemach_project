@@ -7,71 +7,98 @@
 
 @font-face {
     font-family: 'VarelaRound';
-    /*src: url('/fonts/VarelaRound-Regular.ttf') format('truetype');*/
-    /*src: url('https://fonts.googleapis.com/css?family=VarelaRound') format('truetype');*/
+    src: url('/fonts/VarelaRound-Regular.ttf') format('truetype');
 }
-body{
+
+body {
     direction: rtl;
     position: relative;
     background-color: var(--footer_bg);
-    font-family:"VarelaRound";
-    font-size: 18px;
+    font-family: "VarelaRound";
+    font-size: 20px;
 }
-main{
-    padding: 5px 10px;
-}
-main p{margin: 0;}
-main h2,main h1{margin: 0;margin-top: 10px;}
 
-.tbl2col div{
-    border-radius: 20px;
-    background-color: var(--gray_bg);
-    padding: 10px;
-}
-.PicLeft{
-    border-radius: 20px;
-    /*box-shadow: #aaabab -5px 5px;*/
-    float: left;
-    max-width: 40%;
-    margin-right: 20px;
-}
-.sticky{
-    /*position: -webkit-sticky;*/
+.sticky {
+    position: -webkit-sticky;
     position: sticky;
     top: 0;
 }
-.alignLeft{
+
+.alignLeft {
     text-align: left;
 }
-header h1{
+
+header h1 {
     text-align: center;
 }
-footer p{
+
+footer p {
     font-size: 80%;
     line-height: 120%;
 }
-.ptr{
+
+.ptr {
     cursor: pointer;
 }
-.LogoBar{
-    float: left;
-    max-width: 30%;
-    margin-right: 20px;
-}
-.LogoBar img{
-    border-radius: 20px;
-    max-width: 90%;
-    margin-right: 2%;
-    margin-bottom: 40px;
-}
-aside h2{
+
+aside h2 {
     text-align: center;
 }
 
-#logo img{
+#logo img {
     width: 100%;
 }
 
+.plant-container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+}
+.grid-item {
+    padding: 10px;
+    border: 1px solid black;
+    text-align: center;
+}
+.ok {
+    background-color: green;
+}
+.disconnected {
+    background-color: red;
+}
+.problem {
+    background-color: yellow;
+}
+/* Media Queries for responsiveness */
+@media screen and (max-width: 1200px) {
+    .plant-container {
+        gap: 10px;
+        padding: 20px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .plant-container {
+        box-sizing: content-box;
+        gap: 10px;
+        padding: 15px;
+    }
+    .grid-item {
+        font-size: 18px;
+        padding: 20px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .plant-container {
+        grid-template-columns: repeat(3, 1fr); /* Adjust columns for extra small screens */
+        gap: 15px;
+        padding: 10px;
+    }
+    .grid-item {
+        font-size: 16px;
+        padding: 15px;
+    }
+}
 
 /*------------------------------------------------*/
 table{ width: 100%; border-collapse: collapse; }
