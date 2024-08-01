@@ -1,0 +1,72 @@
+@import "colors.css";
+@import "menu.css";
+@import "struct.css" screen and (min-width: 1000px);
+@import "struct_mobile.css" screen and (max-width: 1000px);
+@import "mobile.css" screen and (max-width: 1000px);
+
+@font-face {
+    font-family: 'VarelaRound';
+    src: url('/fonts/VarelaRound-Regular.ttf') format('truetype');
+    /*src: url('https://fonts.googleapis.com/css?family=VarelaRound') format('truetype');*/
+}
+body{
+    direction: rtl;
+    position: relative;
+    background-color: var(--footer_bg);
+    font-family: "VarelaRound";
+    font-size: 18px;
+}
+main{
+    padding: 5px 10px;
+}
+main p{margin: 0;}
+main h2,main h1{margin: 0;margin-top: 10px;}
+
+.tbl2col div{
+    border-radius: 20px;
+    background-color: var(--gray_bg);
+    padding: 10px;
+}
+.PicLeft{
+    border-radius: 20px;
+    /*box-shadow: #aaabab -5px 5px;*/
+    float: left;
+    max-width: 40%;
+    margin-right: 20px;
+}
+.sticky{
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+}
+.alignLeft{
+    text-align: left;
+}
+header h1{
+    text-align: center;
+}
+footer p{
+    font-size: 80%;
+    line-height: 120%;
+}
+.ptr{
+    cursor: pointer;
+}
+.LogoBar{
+    float: left;
+    max-width: 30%;
+    margin-right: 20px;
+}
+.LogoBar img{
+    border-radius: 20px;
+    max-width: 90%;
+    margin-right: 2%;
+    margin-bottom: 40px;
+}
+aside h2{
+    text-align: center;
+}
+
+#logo img{
+    width: 100%;
+}
