@@ -11,5 +11,5 @@ router.get("/",(req, res) => {
 });
 
 router.get("/Plants_Statuses",(req, res) => {
-    res.render("SideBar/Plants_Status",{pageTitle:"עמוד כללי"});
+    res.render("SideBar/Plant_Status/Plants_Status",{pageTitle:"עמוד כללי"});
 });

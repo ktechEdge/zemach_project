@@ -3,7 +3,7 @@
 <div class="plant-container">
     <% for (let row = 0; row < 12; row++) { %>
         <% for (let col = 0; col < 6; col++) { %>
-            <div id="<%= row %>,<%= col %>" class="grid-item device-<%= col + 1 %>"></div>
+            <div id="<%= row %>,<%= col %>" class="grid-item device-<%= Math.floor(row / 3) + 1 + col * 4 %>"></div>
         <% } %>
     <% } %>
 </div>
