@@ -36,11 +36,13 @@ const createData = (data, callback) => {
     let soil_humidity_max_val = soil_humidity;
     let soil_humidity_min_val = soil_humidity;
 
+    let newEntry = null;
+
     // Check if the device_id exists in the global environmental data array
-    const existingData = global.environmentalData.filter(item => item.device_id === device_id);
-    if (existingData.length > 0) {
+    const existingDataIndex = global.environmentalData.findIndex(item => item.device_id === device_id);
+    if (existingDataIndex !== -1) {
         // Get the last entry for this device_id
-        const lastEntry = existingData[existingData.length - 1];
+        const lastEntry = global.environmentalData[existingDataIndex];
         cnt = lastEntry.cnt + 1;
 
         // Update max and min values
@@ -61,32 +63,81 @@ const createData = (data, callback) => {
         air_temperature_sum += lastEntry.air_temperature_sum;
         air_humidity_sum += lastEntry.air_humidity_sum;
         soil_humidity_sum += lastEntry.soil_humidity_sum;
+
+        // Update the existing entry
+        global.environmentalData[existingDataIndex] = {
+            ...lastEntry,
+            uv_radiation,
+            uv_radiation_max: uv_radiation_max_val,
+            uv_radiation_min: uv_radiation_min_val,
+            light,
+            light_max: light_max_val,
+            light_min: light_min_val,
+            air_temperature,
+            air_temperature_max: air_temperature_max_val,
+            air_temperature_min: air_temperature_min_val,
+            air_humidity,
+            air_humidity_max: air_humidity_max_val,
+            air_humidity_min: air_humidity_min_val,
+            soil_humidity,
+            soil_humidity_max: soil_humidity_max_val,
+            soil_humidity_min: soil_humidity_min_val,
+            cnt,
+            measurement_date,
+            uv_radiation_sum,
+            light_sum,
+            air_temperature_sum,
+            soil_humidity_sum,
+            air_humidity_sum
+        };
+    } else {
+        // Create a new entry with the updated values
+        newEntry = {
+            id: global.environmentalData.length + 1,
+            device_id,
+            uv_radiation,
+            uv_radiation_max: uv_radiation_max_val,
+            uv_radiation_min: uv_radiation_min_val,
+            light,
+            light_max: light_max_val,
+            light_min: light_min_val,
+            air_temperature,
+            air_temperature_max: air_temperature_max_val,
+            air_temperature_min: air_temperature_min_val,
+            air_humidity,
+            air_humidity_max: air_humidity_max_val,
+            air_humidity_min: air_humidity_min_val,
+            soil_humidity,
+            soil_humidity_max: soil_humidity_max_val,
+            soil_humidity_min: soil_humidity_min_val,
+            plant_ID,
+            cnt,
+            measurement_date,
+            uv_radiation_sum,
+            light_sum,
+            air_temperature_sum,
+            soil_humidity_sum,
+            air_humidity_sum
+        };
+
+        // Add the new entry to the global environmental data array
+        global.environmentalData.push(newEntry);
     }
 
-    // Create a new entry with the updated values
-    const newEntry = {
-        id: global.environmentalData.length + 1,
-        device_id, uv_radiation, uv_radiation_max: uv_radiation_max_val, uv_radiation_min: uv_radiation_min_val,
-        light, light_max: light_max_val, light_min: light_min_val, air_temperature, air_temperature_max: air_temperature_max_val,
-        air_temperature_min: air_temperature_min_val, air_humidity, air_humidity_max: air_humidity_max_val, air_humidity_min: air_humidity_min_val,
-        soil_humidity, soil_humidity_max: soil_humidity_max_val, soil_humidity_min: soil_humidity_min_val, plant_ID, cnt,
-        measurement_date, uv_radiation_sum, light_sum, air_temperature_sum, soil_humidity_sum, air_humidity_sum
-    };
-
-    // Add the new entry to the global environmental data array
-    global.environmentalData.push(newEntry);
 
     // Check if 10 minutes have passed since the last measurement
-    const tenMinutes = 10 * 60 * 1000;
     const now = new Date();
+    const minutes = now.getMinutes();
     console.log(global.environmentalData);
-    if (global.lastMeasurementTime === null || (now - global.lastMeasurementTime) >= tenMinutes) {
-        // Create average environmental data and reset the array
-        environmentalAvgMiddleware.createEnvironmentalAvgData(newEntry);
+    if (minutes % 2 === 0) {
+        for (let i = 0; i < global.environmentalData.length; i++){
+            // Create average environmental data and reset the array
+            environmentalAvgMiddleware.createEnvironmentalAvgData(global.environmentalData[i]);
+        }
         global.environmentalData = []; // Reset the array
         global.lastMeasurementTime = now; // Update the last measurement time
     }
-    callback(null, newEntry.id);
+    callback(null, device_id); // use device_id as callback argument
 };
 
 module.exports = {

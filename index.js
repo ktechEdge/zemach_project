@@ -20,26 +20,6 @@ app.use(express.static(path.join(__dirname, "js")));
 const databaseConfig = require('./config/database');
 global.dbPool = databaseConfig.pool;
 
-// הגדרות Swagger
-const swaggerOptions = {
-    swaggerDefinition: {
-        openapi: '3.0.0',
-        info: {
-            title: 'Environmental Monitoring API',
-            version: '1.0.0',
-            description: 'API for managing environmental data and devices',
-        },
-        servers: [
-            {
-                url: `http://localhost:${port}`,
-            },
-        ],
-    },
-    apis: ['./routes/*.js'],
-};
-
-const swaggerDocs = swaggerJsdoc(swaggerOptions);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.get('/', function (req, res) {
     res.send('Hello World');
@@ -56,9 +36,6 @@ app.use('/environmental-data-avg', environmentalAvgRoutes);
 
 const plantRoutes = require('./routes/plant');
 app.use('/plants', plantRoutes);
-
-const espRouter =  require('./routes/espRouter')
-app.use('/api', espRouter);
 
 
 
