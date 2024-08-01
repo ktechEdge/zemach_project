@@ -3,6 +3,8 @@ const swaggerUi = require('swagger-ui-express');
 const express = require('express');
 const port = 8080;
 const app = express();
+global.environmentalData = []; // משתנה גלובלי
+global.lastMeasurementTime = null; // זמן המדידה האחרון
 
 app.use(express.json());
 
@@ -56,7 +58,7 @@ const plantRoutes = require('./routes/plant');
 app.use('/plants', plantRoutes);
 
 const espRouter =  require('./routes/espRouter')
-app.use('/api-arduino', espRouter);
+app.use('/api', espRouter);
 
 
 
