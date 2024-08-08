@@ -100,12 +100,22 @@ aside h2 {
     }
 }
 
+
+.connected {
+    background-color: green;
+}
+
+.disconnected {
+    background-color: red;
+}
+
+
 /*------------------------------------------------*/
-table{ width: 100%; border-collapse: collapse; }
+/*table{ width: 100%; border-collapse: collapse; }*/
 
-table, th, td{ border: 1px solid black; }
+/*table, th, td{ border: 1px solid black; }*/
 
-th, td{ padding: 10px; text-align: left; }
+/*th, td{ padding: 10px; text-align: left; }*/
 
-.error{ color: darkred; }
+/*.error{ color: darkred; }*/
 /*------------------------------------------------*/
