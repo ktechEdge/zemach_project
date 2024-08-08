@@ -1,4 +1,4 @@
-<%- include ("page_top.ejs") %>
+<%- include ("./Gen_Edge_Design_Main/page_top.ejs") %>
 
 <div class="plant-container">
     <% for (let row = 0; row < 12; row++) { %>
@@ -40,7 +40,46 @@
             });
     }
 
+    function getDeviceData() {
+        const devices = {};
+
+        document.querySelectorAll('.grid-item').forEach((item) => {
+            const [row, col] = item.id.split(',').map(Number);
+            const className = letters[col] + (row + 1);
+            const deviceNumber = Math.floor(row / 3) + 1 + col * 4;
+
+            if (!devices[deviceNumber]) {
+                devices[deviceNumber] = [];
+            }
+            devices[deviceNumber].push(className);
+        });
+
+        return Object.entries(devices).map(([device, plants]) => ({ device: Number(device), plants }));
+    }
+
+
+    function sendDeviceData() {
+        const deviceData = getDeviceData();
+
+        fetch('/save_device_data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(deviceData),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+
+
     updateGridColors();
+    sendDeviceData();
 </script>
 
 <style>
@@ -53,4 +92,4 @@
     }
 </style>
 
-<%- include ("page_bottom.ejs") %>
+<%- include ("./Gen_Edge_Design_Main/page_bottom.ejs") %>
