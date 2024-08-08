@@ -30,7 +30,7 @@ fetch('/plants.json')
                     <td>${plant.air_humidity_min || ''}</td>
                     <td>${plant.soil_humidity_max || ''}</td>
                     <td>${plant.soil_humidity_min || ''}</td>
-                    <td>${plant.connected ? 'Connected' : 'Disconnected'}</td>
+                   
                 `;
             plantDataContainer.appendChild(plantRow);
         });

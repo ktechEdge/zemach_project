@@ -1,5 +1,15 @@
 <%- include ("./Gen_Edge_Design_Main/page_top.ejs") %>
 
+<div>
+    <label for="data-selection">Select Data to Display:</label>
+    <select id="data-selection">
+        <option value="uv_radiation">UV Radiation</option>
+        <option value="light">Light</option>
+        <option value="air_temperature">Air Temperature</option>
+        <option value="air_humidity">Air Humidity</option>
+        <option value="soil_humidity">Soil Humidity</option>
+    </select>
+</div>
 <div class="plant-container">
     <% for (let row = 0; row < 12; row++) { %>
         <% for (let col = 0; col < 6; col++) { %>
@@ -27,11 +37,19 @@
     function updateGridColors() {
         fetchDeviceStatuses()
             .then(plants => {
+                const now = new Date(); // Current date and time
                 plants.forEach(plant => {
                     const gridItem = document.getElementById(plant.id);
                     if (gridItem) {
+                        const measurementDate = new Date(plant.measurement_date); // Convert measurement_date to Date object
+                        const timeDifference = (now - measurementDate) / (1000 * 60); // Time difference in minutes
+
                         gridItem.classList.remove('connected', 'disconnected');
-                        gridItem.classList.add(plant.connected ? 'connected' : 'disconnected');
+                        if (timeDifference > 2) {
+                            gridItem.classList.add('disconnected'); // Red background for disconnected
+                        } else {
+                            gridItem.classList.add('connected'); // Default color or green for connected
+                        }
                     }
                 });
             })
@@ -40,6 +58,29 @@
             });
     }
 
+
+    function displaySelectedData(selectedData) {
+        fetchDeviceStatuses()
+            .then(plants => {
+                plants.forEach(plant => {
+                    const gridItem = document.getElementById(plant.id);
+                    if (gridItem) {
+                        const plantName = gridItem.className.split(' ').find(cls => cls.match(/[A-F]\d+/));
+                        gridItem.innerHTML = `${plantName} - ${plant[selectedData]}`;
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching plant data:', error);
+            });
+    }
+
+
+
+    document.getElementById('data-selection').addEventListener('change', function() {
+        const selectedData = this.value;
+        displaySelectedData(selectedData);
+    });
     function getDeviceData() {
         const devices = {};
 
