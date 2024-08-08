@@ -1,4 +1,3 @@
-
 const createPlant = (data, callback) => {
     const sql = 'INSERT INTO plant SET ?';
     dbPool.query(sql, data, callback);
@@ -10,8 +9,9 @@ const getAllPlants = (callback) => {
 };
 
 const getPlantById = (id, callback) => {
-    const sql = 'SELECT * FROM plant WHERE id = ?';
-    dbPool.query(sql, [id], callback);
+    id=Number(id);
+    const sql = `SELECT * FROM plant WHERE id = ${id}`;
+    dbPool.query(sql,callback);
 };
 
 const updatePlant = (id, data, callback) => {

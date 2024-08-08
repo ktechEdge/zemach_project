@@ -6,10 +6,10 @@ const mysql = require('mysql2');
 	let USER     =require("./gen_params").USER     ;
 	let PASSWORD =require("./gen_params").PASSWORD ;
 	let DATABASE =require("./gen_params").DATABASE ;
-// console.log("database.HOST	=",HOST	);
-// console.log("database.USER	=",USER	);
-// console.log("database.PASSWORD=",PASSWORD);
-// console.log("database.DATABASE=",DATABASE);
+console.log("database.HOST	=",HOST	);
+console.log("database.USER	=",USER	);
+console.log("database.PASSWORD=",PASSWORD);
+console.log("database.DATABASE=",DATABASE);
 
 
 const pool = mysql.createPool({
