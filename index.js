@@ -11,19 +11,26 @@ app.use(express.json());
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.set("view engine", "ejs");
+
+// Set 'ejs' as the view engine
+app.set('view engine', 'ejs');
+app.set('views', __dirname + '/views');
 
 const path = require('path');
-app.use(express.static(path.join(__dirname, "css")));
-app.use(express.static(path.join(__dirname, "js")));
+app.use("/css",express.static(path.join(__dirname, "css")));
+app.use("/js" ,express.static(path.join(__dirname, "js")));
+app.use("/inc" ,express.static(path.join(__dirname, "inc")));
+
 
 const databaseConfig = require('./config/database');
 global.dbPool = databaseConfig.pool;
 
 
-app.get('/', function (req, res) {
-    res.send('Hello World');
-});
+
+//---------- routers ---------------------------------
+const FrontPages = require('./routes/FE_R');
+app.use('/', FrontPages);
+
 
 const environmentalDataRoutes = require('./routes/environmental');
 app.use('/environmental-data', environmentalDataRoutes);
