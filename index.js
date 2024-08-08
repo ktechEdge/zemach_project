@@ -39,6 +39,9 @@ app.use('/plants', plantRoutes);
 const globalParamRoutes = require('./routes/global_param');
 app.use('/global-parameters', globalParamRoutes);
 
+const Data_rtr = require('./routes/data');
+app.use('/data', Data_rtr);
+
 app.listen(port, () => {
     console.log(`Now listening on port http://localhost:${port}`);
 });
