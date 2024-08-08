@@ -25,8 +25,6 @@ app.use("/inc" ,express.static(path.join(__dirname, "inc")));
 const databaseConfig = require('./config/database');
 global.dbPool = databaseConfig.pool;
 
-
-
 //---------- routers ---------------------------------
 const FrontPages = require('./routes/FE_R');
 app.use('/', FrontPages);
