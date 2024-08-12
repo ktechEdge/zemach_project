@@ -1,0 +1,77 @@
+<%- include ("./Gen_Files/page_top.ejs") %>
+
+<div class="filter-container">
+    <form id="filter-form">
+        <div class="form-group">
+            <label for="plant-name">Plant Name:</label>
+            <select id="plant-name" name="plantName">
+                <option value="">All Plants</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="sensor-type">Sensor Type:</label>
+            <select id="sensor-type" name="sensorType">
+                <option value="">Select Sensor</option>
+                <option value="uv_radiation">UV Radiation</option>
+                <option value="light">Light</option>
+                <option value="air_temperature">Air Temperature</option>
+                <option value="air_humidity">Air Humidity</option>
+                <option value="soil_humidity">Soil Humidity</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="date-from">Date From:</label>
+            <input type="date" id="date-from" name="dateFrom">
+        </div>
+
+        <div class="form-group">
+            <label for="date-to">Date To:</label>
+            <input type="date" id="date-to" name="dateTo">
+        </div>
+
+        <div class="form-group">
+            <button type="submit">Filter</button>
+        </div>
+    </form>
+</div>
+
+<div class="table-container">
+    <table id="plant-table">
+        <thead>
+        <tr>
+            <th>Plant ID</th>
+            <th>Name</th>
+            <th>Device ID</th>
+            <th>UV Radiation</th>
+            <th>UV Radiation Max</th>
+            <th>UV Radiation Min</th>
+            <th>Light</th>
+            <th>Light Max</th>
+            <th>Light Min</th>
+            <th>Air Temperature</th>
+            <th>Air Temperature Max</th>
+            <th>Air Temperature Min</th>
+            <th>Air Humidity</th>
+            <th>Air Humidity Max</th>
+            <th>Air Humidity Min</th>
+            <th>Soil Humidity</th>
+            <th>Soil Humidity Max</th>
+            <th>Soil Humidity Min</th>
+            <th>Measurement Date</th>
+        </tr>
+        </thead>
+        <tbody id="filtered-plant-data">
+
+        </tbody>
+    </table>
+</div>
+<!--<script src="HistoryPage.js"></script>-->
+<script src="js/HistoryPage.js"></script>
+
+<%- include ("./Gen_Files/page_bottom.ejs") %>
+
+
+
+
