@@ -1,8 +1,8 @@
 const environmentalAvgMiddleware = require('../middleware/environmental_avg');
 
 const getAllData = (callback) => {
-    // Return all environmental data
-    callback(null,environmentalData);
+    console.log("Environmental Data:", environmentalData); // Log to check the array
+    callback(null, environmentalData);
 };
 
 const getDataById = (id, callback) => {
@@ -11,12 +11,19 @@ const getDataById = (id, callback) => {
     callback(null, data);
 };
 
-
 const createData = (data, callback) => {
 
     const {
         device_id, uv_radiation, light, air_temperature, air_humidity, soil_humidity, plant_ID
     } = data;
+
+    // Validate the incoming data - check if the values are numbers
+    if (typeof uv_radiation !== 'number' || typeof light !== 'number' ||
+        typeof air_temperature !== 'number' || typeof air_humidity !== 'number' ||
+        typeof soil_humidity !== 'number' || typeof device_id !== 'string') {
+        callback(new Error('Invalid data type'), null);
+        return;
+    }
 
     const measurement_date = new Date(); // Current time
 
@@ -123,13 +130,12 @@ const createData = (data, callback) => {
         };
 
         // Add the new entry to the global environmental data array
-       environmentalData.push(newEntry);
+        environmentalData.push(newEntry);
     }
 
     // Check if 10 minutes have passed since the last measurement
     const now = new Date();
     const minutes = now.getMinutes();
-    console.log(environmentalData);
     if (minutes % 2 === 0) {
         for (let i = 0; i < environmentalData.length; i++){
             // Create average environmental data and reset the array
