@@ -5,6 +5,8 @@ const port = 8080;
 const app = express();
 global.environmentalData = []; // משתנה גלובלי
 global.lastMeasurementTime = null; // זמן המדידה האחרון
+const cors = require("cors");
+app.use(cors());
 
 app.use(express.json());
 
@@ -26,13 +28,14 @@ const databaseConfig = require('./config/database');
 global.dbPool = databaseConfig.pool;
 
 
+
 //---------- routers ---------------------------------
 const FrontPages = require('./routes/FE_R');
 app.use('/', FrontPages);
 
 
 const environmentalDataRoutes = require('./routes/environmental');
-app.use('/environmental-data', environmentalDataRoutes);
+app.use('/esp', environmentalDataRoutes);
 
 const arduinoRoutes = require('./routes/arduino');
 app.use('/arduino-devices', arduinoRoutes);
@@ -43,6 +46,9 @@ app.use('/environmental-data-avg', environmentalAvgRoutes);
 const plantRoutes = require('./routes/plant');
 app.use('/plants', plantRoutes);
 
+
+const firmwareRoutes = require('./routes/firmware');
+app.use('/firmware', firmwareRoutes);
 
 
 app.listen(port, () => {

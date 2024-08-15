@@ -30,6 +30,7 @@ router.get('/:id', (req, res) => {
 
 // Create new environmental data
 router.post('/', (req, res) => {
+    console.log(req.body);
     environmentalDataMiddleware.createData(req.body, (err, id) => {
         if (err) {
             console.error('Error creating environmental data:', err);

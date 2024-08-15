@@ -2,16 +2,18 @@ const environmentalAvgMiddleware = require('../middleware/environmental_avg');
 
 const getAllData = (callback) => {
     // Return all environmental data
-    callback(null, global.environmentalData);
+    callback(null,environmentalData);
 };
 
 const getDataById = (id, callback) => {
     // Find data by ID from the global environmental data array
-    const data = global.environmentalData.find(item => item.id === id);
+    const data = environmentalData.find(item => item.id === id);
     callback(null, data);
 };
 
+
 const createData = (data, callback) => {
+
     const {
         device_id, uv_radiation, light, air_temperature, air_humidity, soil_humidity, plant_ID
     } = data;
@@ -39,10 +41,10 @@ const createData = (data, callback) => {
     let newEntry = null;
 
     // Check if the device_id exists in the global environmental data array
-    const existingDataIndex = global.environmentalData.findIndex(item => item.device_id === device_id);
+    const existingDataIndex = environmentalData.findIndex(item => item.device_id === device_id);
     if (existingDataIndex !== -1) {
         // Get the last entry for this device_id
-        const lastEntry = global.environmentalData[existingDataIndex];
+        const lastEntry = environmentalData[existingDataIndex];
         cnt = lastEntry.cnt + 1;
 
         // Update max and min values
@@ -65,7 +67,7 @@ const createData = (data, callback) => {
         soil_humidity_sum += lastEntry.soil_humidity_sum;
 
         // Update the existing entry
-        global.environmentalData[existingDataIndex] = {
+        environmentalData[existingDataIndex] = {
             ...lastEntry,
             uv_radiation,
             uv_radiation_max: uv_radiation_max_val,
@@ -93,7 +95,7 @@ const createData = (data, callback) => {
     } else {
         // Create a new entry with the updated values
         newEntry = {
-            id: global.environmentalData.length + 1,
+            id: environmentalData.length + 1,
             device_id,
             uv_radiation,
             uv_radiation_max: uv_radiation_max_val,
@@ -121,18 +123,17 @@ const createData = (data, callback) => {
         };
 
         // Add the new entry to the global environmental data array
-        global.environmentalData.push(newEntry);
+       environmentalData.push(newEntry);
     }
-
 
     // Check if 10 minutes have passed since the last measurement
     const now = new Date();
     const minutes = now.getMinutes();
-    console.log(global.environmentalData);
+    console.log(environmentalData);
     if (minutes % 2 === 0) {
-        for (let i = 0; i < global.environmentalData.length; i++){
+        for (let i = 0; i < environmentalData.length; i++){
             // Create average environmental data and reset the array
-            environmentalAvgMiddleware.createEnvironmentalAvgData(global.environmentalData[i]);
+            environmentalAvgMiddleware.createEnvironmentalAvgData(environmentalData[i]);
         }
         global.environmentalData = []; // Reset the array
         global.lastMeasurementTime = now; // Update the last measurement time
