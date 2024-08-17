@@ -4,7 +4,8 @@ function plantName(id) {
     return letters[col] + (row + 1);
 }
 
-fetch('/plants.json')
+// fetch('/plants.json')
+fetch('http://localhost:4286/data/GetAllData')
     .then(response => response.json())
     .then(data => {
         populatePlantNameOptions(data);

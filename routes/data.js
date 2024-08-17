@@ -15,4 +15,4 @@ router.get('/GetAllData', async (req, res) => {
     }
 });
 console.log(`Now listening on port http://localhost:${4286}/data/GetAllData`);
-module.exports = router; //stam
+module.exports = router;
