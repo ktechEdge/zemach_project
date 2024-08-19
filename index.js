@@ -1,7 +1,7 @@
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const express = require('express');
-const port = 8080;
+const port = 4286;
 const app = express();
 global.environmentalData = []; // משתנה גלובלי
 global.lastMeasurementTime = null; // זמן המדידה האחרון
@@ -35,7 +35,7 @@ app.use('/', FrontPages);
 
 
 const environmentalDataRoutes = require('./routes/environmental');
-app.use('/esp', environmentalDataRoutes);
+app.use('/environmental', environmentalDataRoutes);
 
 const arduinoRoutes = require('./routes/arduino');
 app.use('/arduino-devices', arduinoRoutes);
@@ -46,6 +46,14 @@ app.use('/environmental-data-avg', environmentalAvgRoutes);
 const plantRoutes = require('./routes/plant');
 app.use('/plants', plantRoutes);
 
+const environmentalAvgEsp = require('./routes/espRouter');
+app.use('/esp', environmentalAvgEsp);
+
+const globalParamRoutes = require('./routes/global_param');
+app.use('/global-parameters', globalParamRoutes);
+
+const lastUpdateRoutes = require('./routes/lastupdate');
+app.use('/last-updates', lastUpdateRoutes);
 
 const firmwareRoutes = require('./routes/firmware');
 app.use('/firmware', firmwareRoutes);

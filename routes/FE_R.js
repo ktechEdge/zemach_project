@@ -11,6 +11,6 @@ router.get("/Plants_Statuses",(req, res) => {
 });
 
 
-router.get("/firmware",(req, res) => {
+router.get("/upload",(req, res) => {
     res.render("upload",{pageTitle:"עמוד כללי"});
 });

@@ -12,139 +12,141 @@ const getDataById = (id, callback) => {
 };
 
 const createData = (data, callback) => {
+    const { id, Status } = data;  // Getting the ID and Status from the incoming data
 
-    const {
-        device_id, uv_radiation, light, air_temperature, air_humidity, soil_humidity, plant_ID
-    } = data;
+    // Loop through the positions (arrays of environmental data)
+    data.positions.forEach(position => {
+        const { temperature, humidity, lightIntensity, UV_radiation, soilMoisture } = position;
 
-    // Validate the incoming data - check if the values are numbers
-    if (typeof uv_radiation !== 'number' || typeof light !== 'number' ||
-        typeof air_temperature !== 'number' || typeof air_humidity !== 'number' ||
-        typeof soil_humidity !== 'number' || typeof device_id !== 'string') {
-        callback(new Error('Invalid data type'), null);
-        return;
-    }
+        // Validate the incoming data - check if the values are numbers
+        if (typeof UV_radiation !== 'number' || typeof lightIntensity !== 'number' ||
+            typeof temperature !== 'number' || typeof humidity !== 'number' ||
+            typeof soilMoisture !== 'number') {
+            callback(new Error('Invalid data type'), null);
+            return;
+        }
 
-    const measurement_date = new Date(); // Current time
+        const measurement_date = new Date(); // Current time
 
-    let cnt = 1;
-    let uv_radiation_sum = uv_radiation;
-    let light_sum = light;
-    let air_temperature_sum = air_temperature;
-    let air_humidity_sum = air_humidity;
-    let soil_humidity_sum = soil_humidity;
+        let cnt = 1;
+        let UV_radiation_sum = UV_radiation;
+        let lightIntensity_sum = lightIntensity;
+        let temperature_sum = temperature;
+        let humidity_sum = humidity;
+        let soilMoisture_sum = soilMoisture;
 
-    let uv_radiation_max_val = uv_radiation;
-    let uv_radiation_min_val = uv_radiation;
-    let light_max_val = light;
-    let light_min_val = light;
-    let air_temperature_max_val = air_temperature;
-    let air_temperature_min_val = air_temperature;
-    let air_humidity_max_val = air_humidity;
-    let air_humidity_min_val = air_humidity;
-    let soil_humidity_max_val = soil_humidity;
-    let soil_humidity_min_val = soil_humidity;
+        let UV_radiation_max_val = UV_radiation;
+        let UV_radiation_min_val = UV_radiation;
+        let lightIntensity_max_val = lightIntensity;
+        let lightIntensity_min_val = lightIntensity;
+        let temperature_max_val = temperature;
+        let temperature_min_val = temperature;
+        let humidity_max_val = humidity;
+        let humidity_min_val = humidity;
+        let soilMoisture_max_val = soilMoisture;
+        let soilMoisture_min_val = soilMoisture;
 
-    let newEntry = null;
+        let newEntry = null;
 
-    // Check if the device_id exists in the global environmental data array
-    const existingDataIndex = environmentalData.findIndex(item => item.device_id === device_id);
-    if (existingDataIndex !== -1) {
-        // Get the last entry for this device_id
-        const lastEntry = environmentalData[existingDataIndex];
-        cnt = lastEntry.cnt + 1;
+        // Check if the device_id exists in the global environmental data array
+        const existingDataIndex = environmentalData.findIndex(item => item.device_id === id);
+        if (existingDataIndex !== -1) {
+            // Get the last entry for this device_id
+            const lastEntry = environmentalData[existingDataIndex];
+            cnt = lastEntry.cnt + 1;
 
-        // Update max and min values
-        uv_radiation_max_val = Math.max(lastEntry.uv_radiation_max, uv_radiation);
-        uv_radiation_min_val = Math.min(lastEntry.uv_radiation_min, uv_radiation);
-        light_max_val = Math.max(lastEntry.light_max, light);
-        light_min_val = Math.min(lastEntry.light_min, light);
-        air_temperature_max_val = Math.max(lastEntry.air_temperature_max, air_temperature);
-        air_temperature_min_val = Math.min(lastEntry.air_temperature_min, air_temperature);
-        air_humidity_max_val = Math.max(lastEntry.air_humidity_max, air_humidity);
-        air_humidity_min_val = Math.min(lastEntry.air_humidity_min, air_humidity);
-        soil_humidity_max_val = Math.max(lastEntry.soil_humidity_max, soil_humidity);
-        soil_humidity_min_val = Math.min(lastEntry.soil_humidity_min, soil_humidity);
+            // Update max and min values
+            UV_radiation_max_val = Math.max(lastEntry.UV_radiation_max, UV_radiation);
+            UV_radiation_min_val = Math.min(lastEntry.UV_radiation_min, UV_radiation);
+            lightIntensity_max_val = Math.max(lastEntry.lightIntensity_max, lightIntensity);
+            lightIntensity_min_val = Math.min(lastEntry.lightIntensity_min, lightIntensity);
+            temperature_max_val = Math.max(lastEntry.temperature_max, temperature);
+            temperature_min_val = Math.min(lastEntry.temperature_min, temperature);
+            humidity_max_val = Math.max(lastEntry.humidity_max, humidity);
+            humidity_min_val = Math.min(lastEntry.humidity_min, humidity);
+            soilMoisture_max_val = Math.max(lastEntry.soilMoisture_max, soilMoisture);
+            soilMoisture_min_val = Math.min(lastEntry.soilMoisture_min, soilMoisture);
 
-        // Update sum values
-        uv_radiation_sum += lastEntry.uv_radiation_sum;
-        light_sum += lastEntry.light_sum;
-        air_temperature_sum += lastEntry.air_temperature_sum;
-        air_humidity_sum += lastEntry.air_humidity_sum;
-        soil_humidity_sum += lastEntry.soil_humidity_sum;
+            // Update sum values
+            UV_radiation_sum += lastEntry.UV_radiation_sum;
+            lightIntensity_sum += lastEntry.lightIntensity_sum;
+            temperature_sum += lastEntry.temperature_sum;
+            humidity_sum += lastEntry.humidity_sum;
+            soilMoisture_sum += lastEntry.soilMoisture_sum;
 
-        // Update the existing entry
-        environmentalData[existingDataIndex] = {
-            ...lastEntry,
-            uv_radiation,
-            uv_radiation_max: uv_radiation_max_val,
-            uv_radiation_min: uv_radiation_min_val,
-            light,
-            light_max: light_max_val,
-            light_min: light_min_val,
-            air_temperature,
-            air_temperature_max: air_temperature_max_val,
-            air_temperature_min: air_temperature_min_val,
-            air_humidity,
-            air_humidity_max: air_humidity_max_val,
-            air_humidity_min: air_humidity_min_val,
-            soil_humidity,
-            soil_humidity_max: soil_humidity_max_val,
-            soil_humidity_min: soil_humidity_min_val,
-            cnt,
-            measurement_date,
-            uv_radiation_sum,
-            light_sum,
-            air_temperature_sum,
-            soil_humidity_sum,
-            air_humidity_sum
-        };
-    } else {
-        // Create a new entry with the updated values
-        newEntry = {
-            id: environmentalData.length + 1,
-            device_id,
-            uv_radiation,
-            uv_radiation_max: uv_radiation_max_val,
-            uv_radiation_min: uv_radiation_min_val,
-            light,
-            light_max: light_max_val,
-            light_min: light_min_val,
-            air_temperature,
-            air_temperature_max: air_temperature_max_val,
-            air_temperature_min: air_temperature_min_val,
-            air_humidity,
-            air_humidity_max: air_humidity_max_val,
-            air_humidity_min: air_humidity_min_val,
-            soil_humidity,
-            soil_humidity_max: soil_humidity_max_val,
-            soil_humidity_min: soil_humidity_min_val,
-            plant_ID,
-            cnt,
-            measurement_date,
-            uv_radiation_sum,
-            light_sum,
-            air_temperature_sum,
-            soil_humidity_sum,
-            air_humidity_sum
-        };
+            // Update the existing entry
+            environmentalData[existingDataIndex] = {
+                ...lastEntry,
+                UV_radiation,
+                UV_radiation_max: UV_radiation_max_val,
+                UV_radiation_min: UV_radiation_min_val,
+                lightIntensity,
+                lightIntensity_max: lightIntensity_max_val,
+                lightIntensity_min: lightIntensity_min_val,
+                temperature,
+                temperature_max: temperature_max_val,
+                temperature_min: temperature_min_val,
+                humidity,
+                humidity_max: humidity_max_val,
+                humidity_min: humidity_min_val,
+                soilMoisture,
+                soilMoisture_max: soilMoisture_max_val,
+                soilMoisture_min: soilMoisture_min_val,
+                cnt,
+                measurement_date,
+                UV_radiation_sum,
+                lightIntensity_sum,
+                temperature_sum,
+                soilMoisture_sum,
+                humidity_sum
+            };
+        } else {
+            // Create a new entry with the updated values
+            newEntry = {
+                id: environmentalData.length + 1,
+                device_id: id,
+                UV_radiation,
+                UV_radiation_max: UV_radiation_max_val,
+                UV_radiation_min: UV_radiation_min_val,
+                lightIntensity,
+                lightIntensity_max: lightIntensity_max_val,
+                lightIntensity_min: lightIntensity_min_val,
+                temperature,
+                temperature_max: temperature_max_val,
+                temperature_min: temperature_min_val,
+                humidity,
+                humidity_max: humidity_max_val,
+                humidity_min: humidity_min_val,
+                soilMoisture,
+                soilMoisture_max: soilMoisture_max_val,
+                soilMoisture_min: soilMoisture_min_val,
+                plant_ID: data.plant_ID, // Keep plant_ID if present
+                cnt,
+                measurement_date,
+                UV_radiation_sum,
+                lightIntensity_sum,
+                temperature_sum,
+                soilMoisture_sum,
+                humidity_sum
+            };
 
-        // Add the new entry to the global environmental data array
-        environmentalData.push(newEntry);
-    }
+            // Add the new entry to the global environmental data array
+            environmentalData.push(newEntry);
+        }
+    });
 
     // Check if 10 minutes have passed since the last measurement
     const now = new Date();
     const minutes = now.getMinutes();
-    if (minutes % 2 === 0) {
-        for (let i = 0; i < environmentalData.length; i++){
+    if (minutes % 10 === 0) {
+        for (let i = 0; i < environmentalData.length; i++) {
             // Create average environmental data and reset the array
             environmentalAvgMiddleware.createEnvironmentalAvgData(environmentalData[i]);
         }
         global.environmentalData = []; // Reset the array
         global.lastMeasurementTime = now; // Update the last measurement time
     }
-    callback(null, device_id); // use device_id as callback argument
+    callback(null, id); // use device_id as callback argument
 };
 
 module.exports = {
