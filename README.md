@@ -125,12 +125,7 @@ This project is an environmental data management system that collects, processes
 - `GET /Plants_Statuses`: Renders the plant status page.
 - `GET /upload`: Renders the upload page.
 
-## Running the Project
 
-1. Start the application:
-   ```bash
-   npm start
-   ```
 
 2. The app will be running at `http://localhost:4286/`.
 
