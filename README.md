@@ -134,9 +134,4 @@ This project is an environmental data management system that collects, processes
 
 2. The app will be running at `http://localhost:4286/`.
 
-## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-```
-
-This template will help you present your project professionally on GitHub, with clear instructions for setting up and running the application. Don't forget to add a license file and adjust the repository link accordingly!
