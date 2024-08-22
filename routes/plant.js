@@ -2,111 +2,65 @@ const express = require('express');
 const router = express.Router();
 const plantMiddleware = require('../middleware/plant');
 
-/**
- * @swagger
- * tags:
- *   name: Plant
- *   description: Plant management
- */
+router.get('/', (req, res) => {
+    plantMiddleware.getAllPlants((err, data) => {
+        if (err) {
+            console.error('Error retrieving plants:', err);
+            return res.status(500).send('Error retrieving plants');
+        }
+        res.send(data);
+    });
+});
 
-/**
- * @swagger
- * /plants:
- *   post:
- *     summary: Create a new plant
- *     tags: [Plant]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               row:
- *                 type: integer
- *               col:
- *                 type: integer
- *     responses:
- *       200:
- *         description: The created plant.
- */
-router.post('/', plantMiddleware.createPlant);
+router.get('/:id', (req, res) => {
+    plantMiddleware.getPlantById(req.params.id, (err, data) => {
+        if (err) {
+            console.error('Error retrieving plant by ID:', err);
+            return res.status(500).send('Error retrieving plant by ID');
+        }
+        if (!data) {
+            return res.status(404).send('Plant not found');
+        }
+        res.send(data);
+    });
+});
 
-/**
- * @swagger
- * /plants:
- *   get:
- *     summary: Get all plants
- *     tags: [Plant]
- *     responses:
- *       200:
- *         description: List of all plants
- */
-router.get('/', plantMiddleware.getAllPlants);
+router.post('/', (req, res) => {
+    const data = req.body;
+    plantMiddleware.createPlant(data, (err, result) => {
+        if (err) {
+            console.error('Error creating plant:', err);
+            return res.status(500).send('Error creating plant');
+        }
+        res.status(201).send(result);
+    });
+});
 
-/**
- * @swagger
- * /plants/{id}:
- *   get:
- *     summary: Get a plant by ID
- *     tags: [Plant]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *     responses:
- *       200:
- *         description: The plant data
- */
-router.get('/:id', plantMiddleware.getPlantById);
+router.put('/:id', (req, res) => {
+    const data = req.body;
+    plantMiddleware.updatePlant(req.params.id, data, (err, result) => {
+        if (err) {
+            console.error('Error updating plant:', err);
+            return res.status(500).send('Error updating plant');
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).send('Plant not found');
+        }
+        res.send(result);
+    });
+});
 
-/**
- * @swagger
- * /plants/{id}:
- *   put:
- *     summary: Update a plant by ID
- *     tags: [Plant]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               row:
- *                 type: integer
- *               col:
- *                 type: integer
- *     responses:
- *       200:
- *         description: The updated plant
- */
-router.put('/:id', plantMiddleware.updatePlant);
-
-/**
- * @swagger
- * /plants/{id}:
- *   delete:
- *     summary: Delete a plant by ID
- *     tags: [Plant]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *     responses:
- *       200:
- *         description: The deleted plant
- */
-router.delete('/:id', plantMiddleware.deletePlant);
+router.delete('/:id', (req, res) => {
+    plantMiddleware.deletePlant(req.params.id, (err, result) => {
+        if (err) {
+            console.error('Error deleting plant:', err);
+            return res.status(500).send('Error deleting plant');
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).send('Plant not found');
+        }
+        res.send(result);
+    });
+});
 
 module.exports = router;

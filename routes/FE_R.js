@@ -9,3 +9,8 @@ router.get("/",(req, res) => {
 router.get("/Plants_Statuses",(req, res) => {
     res.render("Plants_Status",{pageTitle:"עמוד כללי"});
 });
+
+
+router.get("/upload",(req, res) => {
+    res.render("upload",{pageTitle:"עמוד כללי"});
+});
