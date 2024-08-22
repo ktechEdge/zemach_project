@@ -1,0 +1,26 @@
+<%- include ("page_top.ejs") %>
+    <form class="login-form">
+        <h1>התחברות</h1>
+        <div class="user-info-form">
+            <label>שם משתמש:
+                <input required id="user" type="text"/><br>
+            <hr>
+            </label>
+            <label>סיסמה:
+                <input required id="password" type="password"/>
+            <hr>
+            </label>
+        </div>
+        <div>
+            <div class="forgot">
+                <label><input type="checkbox">זכור אותי</label>
+                <a href="">שכחתי את הסיסמה</a>
+            </div>
+            <button id="login-btn" type="submit">התחבר</button>
+            <div class="register">
+                <label>עדיין אין חשבון?
+                    <a href="">הירשם</a></label>
+            </div>
+        </div>
+    </form>
+<%- include ("page_bottom.ejs") %>
