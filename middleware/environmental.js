@@ -16,7 +16,7 @@ const createData = (data, callback) => {
 
     // Loop through the positions (arrays of environmental data)
     data.positions.forEach(position => {
-        const { temperature, humidity, lightIntensity, UV_radiation, soilMoisture } = position;
+        const { plant_ID, temperature, humidity, lightIntensity, UV_radiation, soilMoisture } = position;
 
         // Validate the incoming data - check if the values are numbers
         if (typeof UV_radiation !== 'number' || typeof lightIntensity !== 'number' ||
@@ -48,10 +48,10 @@ const createData = (data, callback) => {
 
         let newEntry = null;
 
-        // Check if the device_id exists in the global environmental data array
-        const existingDataIndex = environmentalData.findIndex(item => item.device_id === id);
+        // Check if the device_id and plant_ID exists in the global environmental data array
+        const existingDataIndex = environmentalData.findIndex(item => item.device_id === id && item.plant_ID === plant_ID);
         if (existingDataIndex !== -1) {
-            // Get the last entry for this device_id
+            // Get the last entry for this device_id and plant_ID
             const lastEntry = environmentalData[existingDataIndex];
             cnt = lastEntry.cnt + 1;
 
@@ -105,6 +105,7 @@ const createData = (data, callback) => {
             newEntry = {
                 id: environmentalData.length + 1,
                 device_id: id,
+                plant_ID: plant_ID, // Store the plant_ID
                 UV_radiation,
                 UV_radiation_max: UV_radiation_max_val,
                 UV_radiation_min: UV_radiation_min_val,
@@ -120,7 +121,6 @@ const createData = (data, callback) => {
                 soilMoisture,
                 soilMoisture_max: soilMoisture_max_val,
                 soilMoisture_min: soilMoisture_min_val,
-                plant_ID: data.plant_ID, // Keep plant_ID if present
                 cnt,
                 measurement_date,
                 UV_radiation_sum,
@@ -138,8 +138,10 @@ const createData = (data, callback) => {
     // Check if 10 minutes have passed since the last measurement
     const now = new Date();
     const minutes = now.getMinutes();
-    if (minutes % 10 === 0) {
+    if (minutes % 10 === 0) {  // Change to 10-minute intervals
         for (let i = 0; i < environmentalData.length; i++) {
+            console.log("Environmental Data being inserted:", environmentalData[i]); // Log the data
+
             // Create average environmental data and reset the array
             environmentalAvgMiddleware.createEnvironmentalAvgData(environmentalData[i]);
         }
@@ -148,6 +150,8 @@ const createData = (data, callback) => {
     }
     callback(null, id); // use device_id as callback argument
 };
+
+
 
 module.exports = {
     getAllData,

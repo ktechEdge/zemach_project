@@ -3,48 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Firmware</title>
+    <title>Firmware Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #333;
+            margin-top: 20px;
+        }
+
+        #uploadForm, #downloadForm {
+            background-color: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+
+        input[type="file"], input[type="text"] {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #responseMessage, #versionDisplay {
+            margin-top: 20px;
+            font-size: 1em;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
-<h1>Upload Firmware</h1>
-<form id="uploadForm">
-    <input type="file" id="firmwareFile" name="firmware" accept=".bin" required>
-    <button type="submit">Upload</button>
-</form>
 
-<p id="responseMessage"></p>
+<h1>Firmware Management</h1>
+
+<!-- Form for uploading firmware -->
+<div id="uploadForm">
+    <h2>Upload Firmware</h2>
+    <form id="firmwareUploadForm" enctype="multipart/form-data">
+        <input type="file" id="firmwareFile" name="firmware" accept=".bin" required><br>
+        <input type="text" id="version" name="version" placeholder="Enter Version (e.g., 1.0.1)" required><br>
+        <button type="submit">Upload</button>
+    </form>
+    <p id="responseMessage"></p>
+</div>
+
+<!-- Form for downloading firmware -->
+<div id="downloadForm">
+    <h2>Download Latest Firmware</h2>
+    <button id="downloadButton">Download Latest Firmware</button>
+    <p id="downloadMessage"></p>
+</div>
+
+<!-- Display current version -->
+<div>
+    <h2>Current Version</h2>
+    <p id="versionDisplay">Loading...</p>
+</div>
 
 <script>
-    document.getElementById('uploadForm').addEventListener('submit', async function(event) {
-        event.preventDefault(); // Prevent the form from submitting the traditional way
+    // Handle firmware upload
+    document.getElementById('firmwareUploadForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
 
-        // Get the selected file
         const fileInput = document.getElementById('firmwareFile');
-        const file = fileInput.files[0];
+        const versionInput = document.getElementById('version');
+        const responseMessage = document.getElementById('responseMessage');
 
-        if (!file) {
-            alert('Please select a file.');
+        const file = fileInput.files[0];
+        const version = versionInput.value;
+
+        if (!file || !version) {
+            alert('Please select a file and enter a version.');
             return;
         }
 
-        // Create a FormData object to send the file
         const formData = new FormData();
         formData.append('firmware', file);
+        formData.append('version', version);
 
         try {
-            // Send the POST request with the file
-            const response = await fetch('/firmware', {
+            const response = await fetch('/esp/upload', {
                 method: 'POST',
                 body: formData
             });
 
             const result = await response.text();
-            document.getElementById('responseMessage').innerText = result;
+            responseMessage.innerText = result;
 
         } catch (error) {
-            document.getElementById('responseMessage').innerText = 'Error uploading file: ' + error.message;
+            responseMessage.innerText = 'Error uploading file: ' + error.message;
         }
     });
+
+    // Handle firmware download
+    document.getElementById('downloadButton').addEventListener('click', function() {
+        const downloadMessage = document.getElementById('downloadMessage');
+
+        window.location.href = '/esp/download';
+        downloadMessage.innerText = 'Attempting to download the latest firmware...';
+    });
+
+    // Fetch and display current version
+    async function fetchVersion() {
+        try {
+            const response = await fetch('/esp/version');
+            const data = await response.json();
+            document.getElementById('versionDisplay').innerText = `Current Version: ${data.version}`;
+        } catch (error) {
+            document.getElementById('versionDisplay').innerText = 'Error fetching version: ' + error.message;
+        }
+    }
+
+    fetchVersion();
 </script>
+
 </body>
 </html>
