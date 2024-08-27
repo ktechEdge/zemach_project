@@ -1,6 +1,6 @@
 <%- include ("./Gen_Files/page_top.ejs") %>
 
-<div class="plant-container">
+<div class="plant-container" id="fill-table">
     <% for (let row = 0; row < 12; row++) { %>
         <% for (let col = 0; col < 6; col++) { %>
             <div id="<%= row %>,<%= col %>" class="grid-item device-<%= Math.floor(row / 3) + 1 + col * 4 %>"></div>

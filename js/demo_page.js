@@ -19,6 +19,12 @@ function updateGridColors() {
             plants.forEach(plant => {
                 const gridItem = document.getElementById(plant.id);
                 if (gridItem) {
+
+                    gridItem.addEventListener("click", ()=> {
+                        const planID = gridItem.id;
+                        window.location.href = `/plant_Status_history?id=${planID}`
+                    });
+
                     gridItem.classList.remove('connected', 'disconnected');
                     gridItem.classList.add(plant.connected ? 'connected' : 'disconnected');
                 }

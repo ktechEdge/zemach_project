@@ -4,19 +4,32 @@ function plantName(id) {
     return letters[col] + (row + 1);
 }
 
+function getQueryParameter(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+}
+
 fetch('/plants.json')
 // fetch('http://localhost:4286/data/GetAllData')
     .then(response => response.json())
     .then(data => {
-        populatePlantNameOptions(data);
-        setupFormSubmitHandler(data);
+        const plantID = getQueryParameter('id');
+        if(plantID){
+            const datafilter = data.filter(plant => plant.id === plantID)
+            displayFilteredData(datafilter);
+        }
+        else{
+            populatePlantNameOptions(data);
+            SubmitHandler(data);
+            displayFilteredData(data);
+        }
+
     })
     .catch(error => console.error('Error fetching plant data:', error));
 
 function populatePlantNameOptions(data) {
     const plantNameSelect = document.getElementById('plant-name');
     const uniqueNames = [...new Set(data.map(plant => plantName(plant.id)))];
-
     uniqueNames.forEach(name => {
         const option = document.createElement('option');
         option.value = name;
@@ -25,7 +38,7 @@ function populatePlantNameOptions(data) {
     });
 }
 
-function setupFormSubmitHandler(data) {
+function SubmitHandler(data) {
     document.getElementById('filter-form').addEventListener('submit', function (event) {
         event.preventDefault();
 
@@ -38,44 +51,48 @@ function setupFormSubmitHandler(data) {
         const filteredData = filterData(data, plantNameValue, sensorType, dateFrom, dateTo);
         displayFilteredData(filteredData, sensorType);
     });
+
 }
 
 function filterData(data, plantNameValue, sensorType, dateFrom, dateTo) {
     return data.filter(plant => {
         const plantDate = new Date(plant.measurement_date);
-        return (!plantNameValue || plantNameValue === plantName(plant.id)) &&
-            (!sensorType || !isNaN(plant[sensorType])) &&
-            (!dateFrom || !dateTo || (plantDate >= dateFrom && plantDate <= dateTo));
+        const matchesPlantName = !plantNameValue || plantNameValue === plantName(plant.id);
+        const matchesSensorType = !sensorType || !isNaN(plant[sensorType]);
+        const matchesDate = (!dateFrom || !dateTo || (plantDate >= dateFrom && plantDate <= dateTo));
+
+        return matchesPlantName && matchesSensorType && !matchesDate;
     });
 }
 
-function displayFilteredData(filteredData, sensorType) {
+
+function displayFilteredData(data, sensorType = '') {
     const filteredPlantDataContainer = document.getElementById('filtered-plant-data');
     filteredPlantDataContainer.innerHTML = '';
 
-    filteredData.forEach(plant => {
+    data.forEach(plant => {
         const plantRow = document.createElement('tr');
         plantRow.innerHTML = `
-            <td>${plant.id}</td>
             <td>${plantName(plant.id)}</td>
             <td>${plant.device_id}</td>
-            <td>${sensorType === 'uv_radiation' ? plant.uv_radiation : ''}</td>
-            <td>${sensorType === 'uv_radiation' ? plant.uv_radiation_max : ''}</td>
-            <td>${sensorType === 'uv_radiation' ? plant.uv_radiation_min : ''}</td>
-            <td>${sensorType === 'light' ? plant.light : ''}</td>
-            <td>${sensorType === 'light' ? plant.light_max : ''}</td>
-            <td>${sensorType === 'light' ? plant.light_min : ''}</td>
-            <td>${sensorType === 'air_temperature' ? plant.air_temperature : ''}</td>
-            <td>${sensorType === 'air_temperature' ? plant.air_temperature_max : ''}</td>
-            <td>${sensorType === 'air_temperature' ? plant.air_temperature_min : ''}</td>
-            <td>${sensorType === 'air_humidity' ? plant.air_humidity : ''}</td>
-            <td>${sensorType === 'air_humidity' ? plant.air_humidity_max : ''}</td>
-            <td>${sensorType === 'air_humidity' ? plant.air_humidity_min : ''}</td>
-            <td>${sensorType === 'soil_humidity' ? plant.soil_humidity : ''}</td>
-            <td>${sensorType === 'soil_humidity' ? plant.soil_humidity_max : ''}</td>
-            <td>${sensorType === 'soil_humidity' ? plant.soil_humidity_min : ''}</td>
+            <td>${sensorType === 'uv_radiation' || !sensorType ? plant.uv_radiation : ''}</td>
+            <td>${sensorType === 'uv_radiation' || !sensorType ? plant.uv_radiation_max : ''}</td>
+            <td>${sensorType === 'uv_radiation' || !sensorType ? plant.uv_radiation_min : ''}</td>
+            <td>${sensorType === 'light' || !sensorType ? plant.light : ''}</td>
+            <td>${sensorType === 'light' || !sensorType ? plant.light_max : ''}</td>
+            <td>${sensorType === 'light' || !sensorType ? plant.light_min : ''}</td>
+            <td>${sensorType === 'air_temperature' || !sensorType ? plant.air_temperature : ''}</td>
+            <td>${sensorType === 'air_temperature' || !sensorType ? plant.air_temperature_max : ''}</td>
+            <td>${sensorType === 'air_temperature' || !sensorType ? plant.air_temperature_min : ''}</td>
+            <td>${sensorType === 'air_humidity' || !sensorType ? plant.air_humidity : ''}</td>
+            <td>${sensorType === 'air_humidity' || !sensorType ? plant.air_humidity_max : ''}</td>
+            <td>${sensorType === 'air_humidity' || !sensorType ? plant.air_humidity_min : ''}</td>
+            <td>${sensorType === 'soil_humidity' || !sensorType ? plant.soil_humidity : ''}</td>
+            <td>${sensorType === 'soil_humidity' || !sensorType ? plant.soil_humidity_max : ''}</td>
+            <td>${sensorType === 'soil_humidity' || !sensorType ? plant.soil_humidity_min : ''}</td>
             <td>${new Date(plant.measurement_date).toLocaleString()}</td>
         `;
         filteredPlantDataContainer.appendChild(plantRow);
     });
 }
+
