@@ -57,6 +57,7 @@ router.post('/upload', upload.single('firmware'), (req, res) => {
             return res.status(400).send('No file uploaded.');
         }
 
+
         console.log('File uploaded successfully:', req.file);
 
         // Save the version number to the version file

@@ -12,13 +12,13 @@ const getDataById = (id, callback) => {
 };
 
 const createData = (data, callback) => {
-    const { id, Status } = data;  // Getting the ID and Status from the incoming data
+    const { id, Status } = data;  // קבלת ID ו-Status מהנתונים הנכנסים
 
-    // Loop through the positions (arrays of environmental data)
+    // לולאה דרך positions (מערכים של נתונים סביבתיים)
     data.positions.forEach(position => {
         const { plant_ID, temperature, humidity, lightIntensity, UV_radiation, soilMoisture } = position;
 
-        // Validate the incoming data - check if the values are numbers
+        // בדיקת תקינות הנתונים הנכנסים - לבדוק אם הערכים הם מספרים
         if (typeof UV_radiation !== 'number' || typeof lightIntensity !== 'number' ||
             typeof temperature !== 'number' || typeof humidity !== 'number' ||
             typeof soilMoisture !== 'number') {
@@ -26,7 +26,7 @@ const createData = (data, callback) => {
             return;
         }
 
-        const measurement_date = new Date(); // Current time
+        const measurement_date = new Date(); // הזמן הנוכחי
 
         let cnt = 1;
         let UV_radiation_sum = UV_radiation;
@@ -48,14 +48,14 @@ const createData = (data, callback) => {
 
         let newEntry = null;
 
-        // Check if the device_id and plant_ID exists in the global environmental data array
+        // בדיקת קיום של device_id ו-plant_ID במערך הנתונים הגלובלי
         const existingDataIndex = environmentalData.findIndex(item => item.device_id === id && item.plant_ID === plant_ID);
         if (existingDataIndex !== -1) {
-            // Get the last entry for this device_id and plant_ID
+            // קבלת הערך האחרון עבור device_id ו-plant_ID אלה
             const lastEntry = environmentalData[existingDataIndex];
             cnt = lastEntry.cnt + 1;
 
-            // Update max and min values
+            // עדכון ערכי מקסימום ומינימום
             UV_radiation_max_val = Math.max(lastEntry.UV_radiation_max, UV_radiation);
             UV_radiation_min_val = Math.min(lastEntry.UV_radiation_min, UV_radiation);
             lightIntensity_max_val = Math.max(lastEntry.lightIntensity_max, lightIntensity);
@@ -67,14 +67,14 @@ const createData = (data, callback) => {
             soilMoisture_max_val = Math.max(lastEntry.soilMoisture_max, soilMoisture);
             soilMoisture_min_val = Math.min(lastEntry.soilMoisture_min, soilMoisture);
 
-            // Update sum values
+            // עדכון ערכי סיכום
             UV_radiation_sum += lastEntry.UV_radiation_sum;
             lightIntensity_sum += lastEntry.lightIntensity_sum;
             temperature_sum += lastEntry.temperature_sum;
             humidity_sum += lastEntry.humidity_sum;
             soilMoisture_sum += lastEntry.soilMoisture_sum;
 
-            // Update the existing entry
+            // עדכון הערך הקיים עבור plant_ID זה
             environmentalData[existingDataIndex] = {
                 ...lastEntry,
                 UV_radiation,
@@ -101,11 +101,11 @@ const createData = (data, callback) => {
                 humidity_sum
             };
         } else {
-            // Create a new entry with the updated values
+            // יצירת ערך חדש עם הערכים המעודכנים
             newEntry = {
                 id: environmentalData.length + 1,
                 device_id: id,
-                plant_ID: plant_ID, // Store the plant_ID
+                plant_ID: plant_ID, // שמירת plant_ID
                 UV_radiation,
                 UV_radiation_max: UV_radiation_max_val,
                 UV_radiation_min: UV_radiation_min_val,
@@ -130,27 +130,26 @@ const createData = (data, callback) => {
                 humidity_sum
             };
 
-            // Add the new entry to the global environmental data array
+            // הוספת הערך החדש למערך הנתונים הגלובלי
             environmentalData.push(newEntry);
         }
     });
 
-    // Check if 10 minutes have passed since the last measurement
+    // בדיקת מעבר 10 דקות מאז המדידה האחרונה
     const now = new Date();
     const minutes = now.getMinutes();
-    if (minutes % 10 === 0) {  // Change to 10-minute intervals
+    if (minutes % 4 === 0) {  // שינוי לחישוב במרווחי זמן של 10 דקות
         for (let i = 0; i < environmentalData.length; i++) {
-            console.log("Environmental Data being inserted:", environmentalData[i]); // Log the data
+            console.log("Environmental Data being inserted:", environmentalData[i]); // הדפסת הנתונים הנכנסים
 
-            // Create average environmental data and reset the array
+            // יצירת נתוני ממוצע סביבתיים ואיפוס המערך
             environmentalAvgMiddleware.createEnvironmentalAvgData(environmentalData[i]);
         }
-        global.environmentalData = []; // Reset the array
-        global.lastMeasurementTime = now; // Update the last measurement time
+        global.environmentalData = []; // איפוס המערך
+        global.lastMeasurementTime = now; // עדכון זמן המדידה האחרון
     }
-    callback(null, id); // use device_id as callback argument
+    callback(null, id); // שימוש ב-device_id כטיעון בפונקציית callback
 };
-
 
 
 module.exports = {
