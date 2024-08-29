@@ -1,45 +1,142 @@
 const express = require('express');
 const router = express.Router();
-const environmentalDataMiddleware = require('../middleware/environmental');
+const environmentalMiddleware = require('../middleware/environmental');
 
+/**
+ * @swagger
+ * tags:
+ *   name: EnvironmentalData
+ *   description: Environmental data management
+ */
 
-// Get all environmental data
-router.get('/', (req, res) => {
-    environmentalDataMiddleware.getAllData((err, data) => {
-        if (err) {
-            console.error('Error retrieving environmental data:', err);
-            return res.status(500).send('Error retrieving environmental data');
-        }
-        res.send(data);
-    });
-});
+/**
+ * @swagger
+ * /environmental-data:
+ *   post:
+ *     summary: Create a new environmental data entry
+ *     tags: [EnvironmentalData]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               device_id:
+ *                 type: integer
+ *               uv_radiation:
+ *                 type: integer
+ *               light:
+ *                 type: integer
+ *               air_temperature:
+ *                 type: number
+ *               air_humidity:
+ *                 type: integer
+ *               soil_humidity:
+ *                 type: integer
+ *               measurement_date:
+ *                 type: string
+ *                 format: date-time
+ *               plant_ID:
+ *                 type: integer
+ *               cnt:
+ *                 type: integer
+ *     responses:
+ *       200:
+ *         description: The created environmental data entry.
+ */
+router.post('/', environmentalMiddleware.createEnvironmentalData);
 
-// Get environmental data by ID
-router.get('/:id', (req, res) => {
-    environmentalDataMiddleware.getDataById(req.params.id, (err, data) => {
-        if (err) {
-            console.error('Error retrieving environmental data:', err);
-            return res.status(500).send('Error retrieving environmental data');
-        }
-        if (!data) {
-            return res.status(404).send('Environmental data not found');
-        }
-        res.send(data);
-    });
-});
+/**
+ * @swagger
+ * /environmental-data:
+ *   get:
+ *     summary: Get all environmental data
+ *     tags: [EnvironmentalData]
+ *     responses:
+ *       200:
+ *         description: List of all environmental data entries
+ */
+router.get('/', environmentalMiddleware.getAllEnvironmentalData);
 
-// Create new environmental data
-router.post('/', (req, res) => {
-    console.log(req.body);
-    environmentalDataMiddleware.createData(req.body, (err, id) => {
-        if (err) {
-            console.error('Error creating environmental data:', err);
-            return res.status(500).send('Error creating environmental data');
-        }
-        res.status(201).send({ id });
-    });
-});
+/**
+ * @swagger
+ * /environmental-data/{id}:
+ *   get:
+ *     summary: Get an environmental data entry by ID
+ *     tags: [EnvironmentalData]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: The environmental data entry
+ */
+router.get('/:id', environmentalMiddleware.getEnvironmentalDataById);
 
+/**
+ * @swagger
+ * /environmental-data/{id}:
+ *   put:
+ *     summary: Update an environmental data entry by ID
+ *     tags: [EnvironmentalData]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               device_id:
+ *                 type: integer
+ *               uv_radiation:
+ *                 type: integer
+ *               light:
+ *                 type: integer
+ *               air_temperature:
+ *                 type: number
+ *               air_humidity:
+ *                 type: integer
+ *               soil_humidity:
+ *                 type: integer
+ *               measurement_date:
+ *                 type: string
+ *                 format: date-time
+ *               plant_ID:
+ *                 type: integer
+ *               cnt:
+ *                 type: integer
+ *     responses:
+ *       200:
+ *         description: The updated environmental data entry
+ */
+router.put('/:id', environmentalMiddleware.updateEnvironmentalData);
 
+/**
+ * @swagger
+ * /environmental-data/{id}:
+ *   delete:
+ *     summary: Delete an environmental data entry by ID
+ *     tags: [EnvironmentalData]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: The deleted environmental data entry
+ */
+router.delete('/:id', environmentalMiddleware.deleteEnvironmentalData);
 
 module.exports = router;

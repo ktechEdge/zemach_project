@@ -1,71 +1,114 @@
 const express = require('express');
 const router = express.Router();
-const globalParamModel = require('../modules/global_param');
+const globalParamMiddleware = require('../middleware/global_param');
 
-// Get all global parameters
-router.get('/', (req, res) => {
-    globalParamModel.getAllGlobalParams((err, data) => {
-        if (err) {
-            console.error('Error retrieving global parameters:', err);
-            return res.status(500).send('Error retrieving global parameters');
-        }
-        res.send(data);
-    });
-});
+/**
+ * @swagger
+ * tags:
+ *   name: GlobalParam
+ *   description: Global parameter management
+ */
 
-// Get global parameter by ID
-router.get('/:id', (req, res) => {
-    globalParamModel.getGlobalParamById(req.params.id, (err, data) => {
-        if (err) {
-            console.error('Error retrieving global parameter by ID:', err);
-            return res.status(500).send('Error retrieving global parameter by ID');
-        }
-        if (!data || data.length === 0) {
-            return res.status(404).send('Global parameter not found');
-        }
-        res.send(data);
-    });
-});
+/**
+ * @swagger
+ * /global-parameters:
+ *   post:
+ *     summary: Create a new global parameter
+ *     tags: [GlobalParam]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               interval_in:
+ *                 type: integer
+ *               interval_log:
+ *                 type: string
+ *                 format: time
+ *     responses:
+ *       200:
+ *         description: The created global parameter.
+ */
+router.post('/', globalParamMiddleware.createGlobalParam);
 
-// Create new global parameter
-router.post('/', (req, res) => {
-    const data = req.body;
-    globalParamModel.createGlobalParam(data, (err, result) => {
-        if (err) {
-            console.error('Error creating global parameter:', err);
-            return res.status(500).send('Error creating global parameter');
-        }
-        res.status(201).send(result);
-    });
-});
+/**
+ * @swagger
+ * /global-parameters:
+ *   get:
+ *     summary: Get all global parameters
+ *     tags: [GlobalParam]
+ *     responses:
+ *       200:
+ *         description: List of all global parameters
+ */
+router.get('/', globalParamMiddleware.getAllGlobalParams);
 
-// Update global parameter by ID
-router.put('/:id', (req, res) => {
-    const data = req.body;
-    globalParamModel.updateGlobalParam(req.params.id, data, (err, result) => {
-        if (err) {
-            console.error('Error updating global parameter:', err);
-            return res.status(500).send('Error updating global parameter');
-        }
-        if (result.affectedRows === 0) {
-            return res.status(404).send('Global parameter not found');
-        }
-        res.send(result);
-    });
-});
+/**
+ * @swagger
+ * /global-parameters/{id}:
+ *   get:
+ *     summary: Get a global parameter by ID
+ *     tags: [GlobalParam]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: The global parameter data
+ */
+router.get('/:id', globalParamMiddleware.getGlobalParamById);
 
-// Delete global parameter by ID
-router.delete('/:id', (req, res) => {
-    globalParamModel.deleteGlobalParam(req.params.id, (err, result) => {
-        if (err) {
-            console.error('Error deleting global parameter:', err);
-            return res.status(500).send('Error deleting global parameter');
-        }
-        if (result.affectedRows === 0) {
-            return res.status(404).send('Global parameter not found');
-        }
-        res.send(result);
-    });
-});
+/**
+ * @swagger
+ * /global-parameters/{id}:
+ *   put:
+ *     summary: Update a global parameter by ID
+ *     tags: [GlobalParam]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               interval_in:
+ *                 type: integer
+ *               interval_log:
+ *                 type: string
+ *                 format: time
+ *     responses:
+ *       200:
+ *         description: The updated global parameter
+ */
+router.put('/:id', globalParamMiddleware.updateGlobalParam);
+
+/**
+ * @swagger
+ * /global-parameters/{id}:
+ *   delete:
+ *     summary: Delete a global parameter by ID
+ *     tags: [GlobalParam]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: The deleted global parameter
+ */
+router.delete('/:id', globalParamMiddleware.deleteGlobalParam);
 
 module.exports = router;

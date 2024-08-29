@@ -1,7 +1,9 @@
+const arduinoModel = require('../modules/arduino');
+
+
 exports.createArduino = (req, res) => {
     const data = req.body;
-    const sql = 'INSERT INTO arduino SET ?';
-    dbPool.query(sql, data, (err, result) => {
+    arduinoModel.createArduino(data, (err, result) => {
         if (err) {
             console.error('Error creating Arduino device:', err);
             return res.status(500).send('Error creating Arduino device');
@@ -11,8 +13,7 @@ exports.createArduino = (req, res) => {
 };
 
 exports.getAllArduinos = (req, res) => {
-    const sql = 'SELECT * FROM arduino';
-    dbPool.query(sql, (err, results) => {
+    arduinoModel.getAllArduinos((err, results) => {
         if (err) {
             console.error('Error retrieving Arduino devices:', err);
             return res.status(500).send('Error retrieving Arduino devices');
@@ -22,8 +23,7 @@ exports.getAllArduinos = (req, res) => {
 };
 
 exports.getArduinoById = (req, res) => {
-    const sql = 'SELECT * FROM arduino WHERE id = ?';
-    dbPool.query(sql, [req.params.id], (err, result) => {
+    arduinoModel.getArduinoById(req.params.id, (err, result) => {
         if (err) {
             console.error('Error retrieving Arduino device:', err);
             return res.status(500).send('Error retrieving Arduino device');
@@ -37,8 +37,7 @@ exports.getArduinoById = (req, res) => {
 
 exports.updateArduino = (req, res) => {
     const data = req.body;
-    const sql = 'UPDATE arduino SET ? WHERE id = ?';
-    dbPool.query(sql, [data, req.params.id], (err, result) => {
+    arduinoModel.updateArduino(req.params.id, data, (err, result) => {
         if (err) {
             console.error('Error updating Arduino device:', err);
             return res.status(500).send('Error updating Arduino device');
@@ -51,8 +50,7 @@ exports.updateArduino = (req, res) => {
 };
 
 exports.deleteArduino = (req, res) => {
-    const sql = 'DELETE FROM arduino WHERE id = ?';
-    dbPool.query(sql, [req.params.id], (err, result) => {
+    arduinoModel.deleteArduino(req.params.id, (err, result) => {
         if (err) {
             console.error('Error deleting Arduino device:', err);
             return res.status(500).send('Error deleting Arduino device');
