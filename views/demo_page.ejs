@@ -1,4 +1,14 @@
 <%- include ("./Gen_Files/page_top.ejs") %>
+<div>
+    <select id="data-selection">
+        <option value="uv_radiation">UV Radiation</option>
+        <option value="light">Light</option>
+        <option value="air_temperature">Air Temperature</option>
+        <option value="air_humidity">Air Humidity</option>
+        <option value="soil_humidity">Soil Humidity</option>
+    </select>
+    <label for="data-selection">: Select Data to Display</label>
+</div>
 
 <div class="plant-container" id="fill-table">
     <% for (let row = 0; row < 12; row++) { %>
