@@ -3,7 +3,6 @@ function plantName(id) {
     const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
     return letters[col] + (row + 1);
 }
-
 fetch('/plants.json')
     .then(response => response.json())
     .then(data => {
@@ -30,7 +29,7 @@ fetch('/plants.json')
                     <td>${plant.air_humidity_min || ''}</td>
                     <td>${plant.soil_humidity_max || ''}</td>
                     <td>${plant.soil_humidity_min || ''}</td>
-                   
+                    <td>${plant.connected ? 'Connected' : 'Disconnected'}</td>
                 `;
             plantDataContainer.appendChild(plantRow);
         });

@@ -15,3 +15,7 @@ router.get("/Plants_Statuses",(req, res) => {
 router.get("/Devices_Location",(req, res) => {
     res.render("Devices_Location",{pageTitle:"עמוד כללי"});
 });
+
+router.get("/plant_Status_history",(req, res) => {
+    res.render("plant_Status_history",{pageTitle:"plant history"});
+});
