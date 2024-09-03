@@ -1,22 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const environmentalDataMiddleware = require('../models/environmental');
+const environmentalService = require('../models/esp_M');
 
-const router = express.Router();
-const { uploadFirmware, downloadLatestFirmware, getVersion } = require('../controllers/firmwareController');
-const { createEnvironmentalData } = require('../controllers/environmentalController');
-const upload = require('../middleware/upload');
+// Ensure the uploads directory exists on server start
+environmentalService.ensureUploadsDirExists();
 
-// Create new Esp environmental data
-router.post('/', createEnvironmentalData);
+// יצירת נתונים סביבתיים חדשים
+router.post('/', environmentalService.createEnvironmentalData);
 
-// Handle firmware upload
-router.post('/upload', upload.single('firmware'), uploadFirmware);
+// העלאת קובץ
+router.post('/upload', environmentalService.uploadFirmware);
 
-// Download the most recent firmware
-router.get('/download', downloadLatestFirmware);
+// הורדת קובץ אחרון
+router.get('/download', environmentalService.downloadLatestFirmware);
 
-// Get the current version number
-router.get('/version', getVersion);
+// קבלת מספר הגרסה הנוכחית
+router.get('/version', environmentalService.getCurrentVersion);
 
 module.exports = router;
