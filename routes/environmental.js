@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const environmentalDataMiddleware = require('../middleware/environmental');
+const environmentalDataMiddleware = require('../models/environmental');
 
 
 // Get all environmental data

@@ -13,6 +13,9 @@ const getEnvironmentalAvgDataById = (id, callback) => {
     });
 };
 
+
+
+
 const createEnvironmentalAvgData = (data, callback) => {
     const {
         device_id,
