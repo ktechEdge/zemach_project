@@ -7,7 +7,11 @@ jest.mock("../../../../modules/arduino", () => ({
 
 // הגדרת המימוש המדומה של הפונקציה
 arduinoModel.createArduino.mockImplementation((data, callback) => {
-  callback(new Error("Something went wrong"), data.id);
+  if (!data) {
+    callback(new Error("Data is undefined or null"), null); // במקרה של undefined מחזירים שגיאה
+  } else {
+    callback(new Error("Something went wrong"), data.id);
+  }
 });
 
 //------------------------------טסטים------------------------------------------
@@ -63,5 +67,21 @@ it("should handle null data gracefully", () => {
   arduinoModel.createArduino(data, (err, result) => {
     expect(err).toBeInstanceOf(Error); //  לוודא שקיימת שגיאה
     expect(err.message).toBe("Something went wrong"); // בדיקת הודעת השגיאה
+  });
+});
+
+//בדיקת נתונים לא תקינים כמו undefined
+it("should handle undefined data", () => {
+  arduinoModel.createArduino(undefined, (err, result) => {
+    expect(err).toBeInstanceOf(Error); // לוודא שקיימת שגיאה
+    expect(err.message).toBe("Data is undefined or null"); // בדיקת הודעת השגיאה
+  });
+});
+
+//בדיקת נתונים לא תקינים כמו null
+it("should handle undefined data", () => {
+  arduinoModel.createArduino(null, (err, result) => {
+    expect(err).toBeInstanceOf(Error); // לוודא שקיימת שגיאה
+    expect(err.message).toBe("Data is undefined or null"); // בדיקת הודעת השגיאה
   });
 });
