@@ -1,0 +1,35 @@
+
+nav ul{
+    list-style-type: none;
+    padding-inline-start:10px;
+}
+nav ul li:first-child{
+    border-top: 1px solid var(--side_text);;
+}
+nav ul li{
+    border-bottom: 1px solid var(--side_text);;
+}
+nav ul li.hasSub{
+        /*background-color: var(--nav_sec_bg);*/
+    font-weight: bold;
+}
+nav ul li a:hover{
+    background-color: var(--nav_hover_bg);
+    color: var(--nav_hover_text);
+}
+nav ul li a{
+    display: inline-block;
+    width: 100%;
+    text-decoration: none;
+    color:              var(--side_text);
+}
+nav ul li ul li:last-child{
+    border-bottom: none;
+}
+nav ul li ul li{
+    background-color: var(--nav_sec_bg);
+    padding-right: 10px;
+}
+nav ul li ul li a{
+    color: var(--nav_sec_text);
+}
