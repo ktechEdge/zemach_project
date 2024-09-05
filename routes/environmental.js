@@ -4,14 +4,14 @@ const environmentalDataMiddleware = require('../models/environmental');
 
 
 // Get all environmental data
-router.get('/', (req, res) => {
-    environmentalDataMiddleware.getAllData((err, data) => {
-        if (err) {
-            console.error('Error retrieving environmental data:', err);
-            return res.status(500).send('Error retrieving environmental data');
-        }
+router.get('/', async (req, res) => {
+    try {
+        const data = await environmentalDataMiddleware.getAllData();
         res.send(data);
-    });
+    } catch (err) {
+        console.error('Error retrieving environmental data:', err);
+        res.status(500).send('Error retrieving environmental data');
+    }
 });
 
 // Get environmental data by ID

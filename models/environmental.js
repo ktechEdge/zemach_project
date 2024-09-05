@@ -111,7 +111,7 @@ class EnvironmentalDataManager {
 
     isTimeForAverage() {
         const now = new Date();
-        return now.getMinutes() % 10 === 0;
+        return 2 === 2;
     }
 }
 

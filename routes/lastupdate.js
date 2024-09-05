@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const lastUpdateModel = require('../modules/lastupdate');
+const lastUpdateModel = require('../models/lastupdate');
 
 // Get all last updates
 router.get('/', (req, res) => {

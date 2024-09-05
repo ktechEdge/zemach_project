@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const globalParamModel = require('../modules/global_param');
+const globalParamModel = require('../models/global_param');
 
 // Get all global parameters
 router.get('/', (req, res) => {
