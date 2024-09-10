@@ -14,6 +14,10 @@ router.get("/plant_Status_history",(req, res) => {
     res.render("plant_Status_history",{pageTitle:"plant history"});
 });
 
+router.get("/History_Graph",(req, res) => {
+    res.render("History_Graph.ejs",{pageTitle:"plant history Graph"});
+});
+
 router.get("/Devices_Location",(req, res) => {
-    res.render("Devices_Location",{pageTitle:"עמוד כללי"});
+    res.render("Devices_Location",{pageTitle:"Home Page"});
 });
