@@ -1,0 +1,65 @@
+<%- include("./Gen_Files/page_top.ejs") %>
+<link rel="stylesheet" href="/css/Workers_Notes.css">
+
+<h2>Add a Note</h2>
+
+<form id="noteForm" action="/" method="GET">
+    <!-- Worker Name Field -->
+    <div>
+        <label for="worker_name">Worker Name : </label>
+        <input type="text" id="worker_name" name="worker_name" required>
+    </div>
+
+    <!-- Note Field -->
+    <div>
+        <label for="note">Note : </label>
+        <textarea id="note" name="note" rows="4" required></textarea>
+    </div>
+
+    <!-- Date Field -->
+    <div>
+        <label for="date">Date : </label>
+        <input type="date" id="date" name="date" required>
+    </div>
+
+    <!-- Time Field -->
+    <div>
+        <label for="time">Time : </label>
+        <input type="time" id="time" name="time" required>
+    </div>
+
+    <!-- Dropdown for Columns -->
+    <div>
+        <label for="column">Column : </label>
+        <select id="column" name="column" required>
+            <option value="" disabled selected>Select Column</option>
+            <!-- Columns from 1 to 10 -->
+            <% for (let i = 1; i <= 10; i++) { %>
+                <option value="<%= i %>">Column <%= i %></option>
+            <% } %>
+        </select>
+    </div>
+
+    <!-- Dropdown for Rows -->
+    <div>
+        <label for="row">Row :</label>
+        <select id="row" name="row" required>
+            <option value="" disabled selected>Select Row</option>
+            <!-- Rows from 1 to 10 -->
+            <% for (let i = 1; i <= 10; i++) { %>
+                <option value="<%= i %>">Row <%= i %></option>
+            <% } %>
+        </select>
+    </div>
+    <br>
+    <br>
+
+    <!-- Submit Button -->
+    <div>
+    <button type="submit">Send</button>
+    </div>
+</form>
+
+<script src="/js/Workers_Notes.js"></script>
+
+<%- include("./Gen_Files/page_bottom.ejs") %>

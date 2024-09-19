@@ -1,0 +1,194 @@
+[
+  {
+    "device": 1,
+    "plants": [
+      "A1",
+      "A2",
+      "A3"
+    ]
+  },
+  {
+    "device": 2,
+    "plants": [
+      "A4",
+      "A5",
+      "A6"
+    ]
+  },
+  {
+    "device": 3,
+    "plants": [
+      "A7",
+      "A8",
+      "A9"
+    ]
+  },
+  {
+    "device": 4,
+    "plants": [
+      "A10",
+      "A11",
+      "A12"
+    ]
+  },
+  {
+    "device": 5,
+    "plants": [
+      "B1",
+      "B2",
+      "B3"
+    ]
+  },
+  {
+    "device": 6,
+    "plants": [
+      "B4",
+      "B5",
+      "B6"
+    ]
+  },
+  {
+    "device": 7,
+    "plants": [
+      "B7",
+      "B8",
+      "B9"
+    ]
+  },
+  {
+    "device": 8,
+    "plants": [
+      "B10",
+      "B11",
+      "B12"
+    ]
+  },
+  {
+    "device": 9,
+    "plants": [
+      "C1",
+      "C2",
+      "C3"
+    ]
+  },
+  {
+    "device": 10,
+    "plants": [
+      "C4",
+      "C5",
+      "C6"
+    ]
+  },
+  {
+    "device": 11,
+    "plants": [
+      "C7",
+      "C8",
+      "C9"
+    ]
+  },
+  {
+    "device": 12,
+    "plants": [
+      "C10",
+      "C11",
+      "C12"
+    ]
+  },
+  {
+    "device": 13,
+    "plants": [
+      "D1",
+      "D2",
+      "D3"
+    ]
+  },
+  {
+    "device": 14,
+    "plants": [
+      "D4",
+      "D5",
+      "D6"
+    ]
+  },
+  {
+    "device": 15,
+    "plants": [
+      "D7",
+      "D8",
+      "D9"
+    ]
+  },
+  {
+    "device": 16,
+    "plants": [
+      "D10",
+      "D11",
+      "D12"
+    ]
+  },
+  {
+    "device": 17,
+    "plants": [
+      "E1",
+      "E2",
+      "E3"
+    ]
+  },
+  {
+    "device": 18,
+    "plants": [
+      "E4",
+      "E5",
+      "E6"
+    ]
+  },
+  {
+    "device": 19,
+    "plants": [
+      "E7",
+      "E8",
+      "E9"
+    ]
+  },
+  {
+    "device": 20,
+    "plants": [
+      "E10",
+      "E11",
+      "E12"
+    ]
+  },
+  {
+    "device": 21,
+    "plants": [
+      "F1",
+      "F2",
+      "F3"
+    ]
+  },
+  {
+    "device": 22,
+    "plants": [
+      "F4",
+      "F5",
+      "F6"
+    ]
+  },
+  {
+    "device": 23,
+    "plants": [
+      "F7",
+      "F8",
+      "F9"
+    ]
+  },
+  {
+    "device": 24,
+    "plants": [
+      "F10",
+      "F11",
+      "F12"
+    ]
+  }
+]
