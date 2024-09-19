@@ -19,9 +19,9 @@ router.get("/Devices_Location",(req, res) => {
 });
 
 router.get("/History_Graph",(req, res) => {
-    res.render("History_Graph.ejs",{pageTitle:"plant history Graph"});
+    res.render("History_Graph",{pageTitle:"plant history Graph"});
 });
 
 router.get("/Workers_Notes",(req, res) => {
-    res.render("Workers_Notes.ejs",{pageTitle:"Workers Notes"});
+    res.render("Workers_Notes",{pageTitle:"Workers Notes"});
 });
