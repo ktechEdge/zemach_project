@@ -1,0 +1,131 @@
+/* General Styling for the Page */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+/* Container for the form */
+form {
+    background-color: white;
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    direction: ltr;
+}
+
+/* Form Heading */
+h2 {
+    text-align: center;
+    color: #333;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+/* Form Labels */
+form label {
+    display: block;
+    font-size: 1em;
+    color: #555;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+/* Form Inputs and Textareas */
+form input[type="text"],
+form textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+}
+
+/* Placeholder Styling */
+form input[type="text"]::placeholder {
+    color: #bbb;
+    font-style: italic;
+}
+
+/* Focus on Inputs and Textareas */
+form input[type="text"]:focus,
+form textarea:focus {
+    border-color: #00aaff;
+    outline: none;
+    background-color: #fff;
+}
+
+/* Textarea Styling */
+form textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* Submit Button */
+form button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #00aaff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.2em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Button Hover Effect */
+form button[type="submit"]:hover {
+    background-color: #0088cc;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    form {
+        padding: 15px;
+    }
+
+    form h2 {
+        font-size: 1.6em;
+    }
+
+    form input[type="text"],
+    form textarea {
+        padding: 10px;
+    }
+
+    form button[type="submit"] {
+        padding: 10px;
+        font-size: 1.1em;
+    }
+}
+
+@media (max-width: 480px) {
+    form {
+        padding: 10px;
+    }
+
+    form h2 {
+        font-size: 1.4em;
+    }
+
+    form input[type="text"],
+    form textarea {
+        padding: 8px;
+    }
+
+    form button[type="submit"] {
+        padding: 8px;
+        font-size: 1em;
+    }
+}
