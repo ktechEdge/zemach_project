@@ -13,29 +13,30 @@ function fetchDeviceStatuses() {
         .then(data => data);
 }
 // converting the plant id to row and col id
-function convertIdToRowAndCol(item) { 
+async function convertIdToRowAndCol(item) { 
     console.log(item);
-    fetch(`/plants/${item.plant_ID}`)
-        .then(response => response.json())
-        .then(data =>  data )
-        .then(plant => {
-            console.log(plant);
-            let fullId = `${plant[0].row},${plant[0].col}`;
-            console.log(fullId);
-            return fullId;
-        })
-        .catch(error => {
-            console.error('Error fetching plant id data:', error);
-        });
+    try {
+        const response = await fetch(`/plants/${item.plant_ID}`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('There was a problem with the fetch id operation:', error);
+    }
+    
 }
 function updateGridColors() {
     fetchDeviceStatuses()
         .then(plants => {
             const currentTime = new Date();  // Get current time
-            plants.forEach(plant => {
-                let id = convertIdToRowAndCol(plant);
-                const gridItem = document.getElementById(id);
+            plants.forEach( async plant => {
+                let id = await convertIdToRowAndCol(plant);
+                const gridItem = document.getElementById(`${id[0].row},${id[0].col}`);
                 if (gridItem) {
+                    console.log(gridItem);
+                    
                     // Calculate the time difference
                     const measurementTime = new Date(plant.measurement_date);
                     const timeDifference = currentTime - measurementTime;  // Difference in milliseconds
