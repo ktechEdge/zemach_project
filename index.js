@@ -1,9 +1,6 @@
-
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const express = require('express');
-const fs = require('fs');
-const path = require('path');
 const port = 4286;
 const app = express();
 global.environmentalData = []; // משתנה גלובלי
@@ -21,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
+const path = require('path');
 app.use("/css",express.static(path.join(__dirname, "css")));
 app.use("/js" ,express.static(path.join(__dirname, "js")));
 app.use("/inc" ,express.static(path.join(__dirname, "inc")));
@@ -60,33 +58,7 @@ app.use('/last-updates', lastUpdateRoutes);
 const firmwareRoutes = require('./routes/firmware');
 app.use('/firmware', firmwareRoutes);
 
-app.post('/save_device_data', (req, res) => {
-    const data = req.body;
-    fs.writeFile('device_data.json', JSON.stringify(data, null, 2), (err) => {
-        if (err) {
-            console.error('Error saving data:', err);
-            res.status(500).send('Error saving data');
-        } else {
-            console.error('Data saved successfully');
-        }
-    });
-});
 
-app.get('/device_data', (req, res) => {
-    fs.readFile('device_data.json', 'utf8', (err, data) => {
-        if (err) {
-            console.error('Error reading data:', err);
-            res.status(500).send('Error reading data');
-        } else {
-            res.json(JSON.parse(data));
-        }
-    });
-});
-
-// Serving static plants.json file
-app.get('/plants.json', (req, res) => {
-    res.sendFile(path.join(__dirname, '/plants.json'));
-});
 app.listen(port, () => {
     console.log(`Now listening on port http://localhost:${port}`);
 });
