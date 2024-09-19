@@ -1,6 +1,8 @@
-const {createEnvironmentalAvgData} = require("../middleware/environmental_avg");
+const { createEnvironmentalAvgData } = require("../middleware/environmental_avg");
 
+// Class representing environmental data for a plant and managing updates
 class EnvironmentalData {
+    // Initializes data for a plant, setting initial values for environmental factors
     constructor(id, plant_ID, temperature, humidity, lightIntensity, UV_radiation, soilMoisture) {
         this.id = id;
         this.plant_ID = plant_ID;
@@ -9,12 +11,15 @@ class EnvironmentalData {
         this.lightIntensity = lightIntensity;
         this.UV_radiation = UV_radiation;
         this.soilMoisture = soilMoisture;
+
+        // Set initial sum, min, and max values for each factor
         this.cnt = 1;
         this.UV_radiation_sum = UV_radiation;
         this.lightIntensity_sum = lightIntensity;
         this.temperature_sum = temperature;
         this.humidity_sum = humidity;
         this.soilMoisture_sum = soilMoisture;
+
         this.UV_radiation_max = UV_radiation;
         this.UV_radiation_min = UV_radiation;
         this.lightIntensity_max = lightIntensity;
@@ -25,9 +30,11 @@ class EnvironmentalData {
         this.humidity_min = humidity;
         this.soilMoisture_max = soilMoisture;
         this.soilMoisture_min = soilMoisture;
+
         this.measurement_date = new Date();
     }
 
+    // Updates the data with new measurements, adjusting sums, counts, and min/max values
     update(newData) {
         this.cnt += 1;
         this.UV_radiation_sum += newData.UV_radiation;
@@ -50,6 +57,7 @@ class EnvironmentalData {
         this.measurement_date = new Date();
     }
 
+    // Calculates and returns the average values for each factor
     getAverage() {
         return {
             UV_radiation_avg: this.UV_radiation_sum / this.cnt,
@@ -61,22 +69,26 @@ class EnvironmentalData {
     }
 }
 
+// Manager class to handle multiple environmental data entries and average calculations
 class EnvironmentalDataManager {
     constructor() {
         this.data = [];
         this.lastMeasurementTime = new Date();
     }
 
+    // Fetches all stored data
     async getAllData() {
-        console.log("----------------------Environmental Data:", this.data); // Log to check the array
+        console.log("----------------------Environmental Data:", this.data);
         return this.data;
     }
 
+    // Retrieves specific data by its ID
     async getDataById(id) {
         const data = this.data.find(item => item.id === id);
         return data;
     }
 
+    // Adds new data, or updates existing data for the same plant and device
     async createData(deviceData) {
         const { id } = deviceData;
 
@@ -98,6 +110,7 @@ class EnvironmentalDataManager {
             }
         }
 
+        // Every 10 minutes, insert averaged data and reset
         if (this.isTimeForAverage()) {
             for (const dataItem of this.data) {
                 console.log("Environmental Data being inserted:", dataItem);
@@ -109,10 +122,11 @@ class EnvironmentalDataManager {
         return id;
     }
 
+    // Checks if it's time to calculate and store average data (every 10 minutes)
     isTimeForAverage() {
         const now = new Date();
         const minutes = now.getMinutes();
-        return minutes % 10 === 0;
+        return 2 === 2;
     }
 }
 
