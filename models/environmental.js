@@ -68,7 +68,7 @@ class EnvironmentalDataManager {
     }
 
     async getAllData() {
-        console.log("Environmental Data:", this.data); // Log to check the array
+        console.log("----------------------Environmental Data:", this.data); // Log to check the array
         return this.data;
     }
 
@@ -111,7 +111,8 @@ class EnvironmentalDataManager {
 
     isTimeForAverage() {
         const now = new Date();
-        return 2 === 2;
+        const minutes = now.getMinutes();
+        return minutes % 10 === 0;
     }
 }
 
