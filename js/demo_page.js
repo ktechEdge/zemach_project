@@ -8,16 +8,15 @@ document.querySelectorAll('.grid-item').forEach((item) => {
 });
 
 function fetchDeviceStatuses() {
-    return fetch('/plants.json')
+    return fetch('/environmental-data-avg')
         .then(response => response.json())
         .then(data => data);
 }
 
 function updateGridColors() {
     fetchDeviceStatuses()
-        .then(plants => {
+        .then(plants => {   
             const currentTime = new Date();  // Get current time
-
             plants.forEach(plant => {
                 const gridItem = document.getElementById(plant.id);
                 if (gridItem) {
