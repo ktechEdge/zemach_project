@@ -12,13 +12,29 @@ function fetchDeviceStatuses() {
         .then(response => response.json())
         .then(data => data);
 }
-
+// converting the plant id to row and col id
+function convertIdToRowAndCol(item) { 
+    console.log(item);
+    fetch(`/plants/${item.plant_ID}`)
+        .then(response => response.json())
+        .then(data =>  data )
+        .then(plant => {
+            console.log(plant);
+            let fullId = `${plant[0].row},${plant[0].col}`;
+            console.log(fullId);
+            return fullId;
+        })
+        .catch(error => {
+            console.error('Error fetching plant id data:', error);
+        });
+}
 function updateGridColors() {
     fetchDeviceStatuses()
-        .then(plants => {   
+        .then(plants => {
             const currentTime = new Date();  // Get current time
             plants.forEach(plant => {
-                const gridItem = document.getElementById(plant.id);
+                let id = convertIdToRowAndCol(plant);
+                const gridItem = document.getElementById(id);
                 if (gridItem) {
                     // Calculate the time difference
                     const measurementTime = new Date(plant.measurement_date);
