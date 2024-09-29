@@ -29,27 +29,30 @@ function SubmitHandler(data) {
 
         const plantNameValue = document.getElementById('plant-name').value;
         const sensorType = document.getElementById('sensor-type').value;
-        const dateFrom = new Date(document.getElementById('date-from').value);
-        const dateTo = new Date(document.getElementById('date-to').value);
-        dateTo.setHours(23, 59, 59, 999);
+        // const dateFrom = new Date(document.getElementById('date-from').value);
+        // const dateTo = new Date(document.getElementById('date-to').value);
+        // dateTo.setHours(23, 59, 59, 999);
 
-        const filteredData = filterData(data, plantNameValue, sensorType, dateFrom, dateTo);
+        // const filteredData = filterData(data, plantNameValue, sensorType, dateFrom, dateTo);
+        const filteredData = filterData(data, plantNameValue, sensorType);
         displayGraphdData(filteredData, sensorType);
     });
 
 }
 
-function filterData(data, plantNameValue, sensorType, dateFrom, dateTo) {
+// function filterData(data, plantNameValue, sensorType, dateFrom, dateTo) {
+function filterData(data, plantNameValue, sensorType) {
     return data.filter(plant => {
-        const plantDate = new Date(plant.measurement_date);
+        // const plantDate = new Date(plant.measurement_date);
         const matchesPlantName = !plantNameValue || plantNameValue === plantName(plant.id);
         const matchesSensorType = !sensorType || !isNaN(plant[sensorType]);
-        const matchesDate = (!dateFrom || !dateTo || (plantDate >= dateFrom && plantDate <= dateTo));
+        // const matchesDate = (!dateFrom || !dateTo || (plantDate >= dateFrom && plantDate <= dateTo));
 
         // return matchesPlantName && matchesSensorType && !matchesDate;
-        return matchesPlantName && matchesSensorType && matchesDate;
+        return matchesPlantName && matchesSensorType;
     });
 }
+
 
 function displayGraphdData(data, sensorType = '') {
     const timeline = Array.from({ length: 24 }, (_, hour) => {
@@ -62,10 +65,12 @@ function displayGraphdData(data, sensorType = '') {
         max: Array(12).fill(null)
     };
 
+    // const plntNme = plantName(data.id);
 
     data.forEach(plant => {
         const plantDate = new Date(plant.measurement_date)
         const hour = plantDate.getHours();
+
 
         const sensorValues = sensorType ? {
             min: plant[sensorType + '_min'],
@@ -98,7 +103,8 @@ function displayGraphdData(data, sensorType = '') {
         xaxis: {
             title: { text: sensorType + 'Value' },
             type: 'category',
-            categories: timeline,
+            // categories: plntNme,
+            categories: data.deviceId,
             labels: { rotate: -45 }
         },
 

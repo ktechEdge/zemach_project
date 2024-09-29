@@ -15,7 +15,10 @@ router.get("/plant_Status_history",(req, res) => {
 });
 
 router.get("/History_Graph",(req, res) => {
-    res.render("History_Graph.ejs",{pageTitle:"plant history Graph"});
+    res.render("History_Graph",{pageTitle:"plant history Graph"});
+});
+router.get("/Comparing_Graph",(req, res) => {
+    res.render("Comparing_Graph",{pageTitle:"Comparing Graph"});
 });
 
 router.get("/Devices_Location",(req, res) => {

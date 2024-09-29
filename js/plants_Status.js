@@ -1,18 +1,41 @@
 function plantName(id) {
-    const [row, col] = id.split(',').map(Number);
-    const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+    const row = id , col = id;
+    let letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+
+    document.querySelectorAll('.grid-item').forEach((item) => {
+        [row, col] = item.id.split(',').map(Number);
+        const className = letters[col] + (row + 1);
+        item.classList.add(className);
+        item.textContent = className;
+    });
     return letters[col] + (row + 1);
 }
-fetch('/plants.json')
-    .then(response => response.json())
-    .then(data => {
-        const plantDataContainer = document.getElementById('plant-data');
-        data.forEach(plant => {
-            const plantRow = document.createElement('tr');
-            plantRow.innerHTML = `
+function fetchDeviceStatuses() {
+    return fetch('/environmental-data-avg')
+        .then(response => response.json())
+        .then(data => data);
+}
+
+async function convertIdToRowAndCol(item) {
+    console.log(item);
+    try {
+        let response = await fetch(`/plants/${item.plant_ID}`);
+        if (!response.ok) { throw new Error('Network response was not ok'); }
+        return await response.json();
+    }
+    catch (error) { console.error('There was a problem with the fetch id operation:', error); }
+}
+function displayStatus() {
+    fetchDeviceStatuses()
+        .then(data => {
+            const plantDataContainer = document.getElementById('plant-data');
+            data.forEach(async plant => {
+                let DeviceID = await  convertIdToRowAndCol(plant);
+                let plantRow = document.createElement('tr');
+                plantRow.innerHTML = `
                     <td>${plant.id}</td>
-                    <td>${plantName(plant.id)}</td>
-                    <td>${plant.device_id}</td>
+                    <td>${plantName(plant.plant_ID)}</td>
+                    <td>${`${DeviceID[0].row}, ${DeviceID[0].col}`}</td>
                     <td>${plant.uv_radiation}</td>
                     <td>${plant.light}</td>
                     <td>${plant.air_temperature}</td>
@@ -31,7 +54,9 @@ fetch('/plants.json')
                     <td>${plant.soil_humidity_min || ''}</td>
                     <td>${plant.connected ? 'Connected' : 'Disconnected'}</td>
                 `;
-            plantDataContainer.appendChild(plantRow);
-        });
-    })
-    .catch(error => console.error('Error fetching plant data:', error));
+                plantDataContainer.appendChild(plantRow);
+            });
+        })
+        .catch(error => console.error('Error fetching plant data:', error));
+}
+displayStatus();

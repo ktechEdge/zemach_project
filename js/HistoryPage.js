@@ -1,36 +1,54 @@
-function plantName(id) {
-    const [row, col] = id.split(',').map(Number);
-    const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
-    return letters[col] + (row + 1);
-}
+      function plantName(id) {
+        const row = id , col = id;
+        let letters = ['A', 'B', 'C', 'D', 'E', 'F'];
 
+        document.querySelectorAll('.grid-item').forEach((item) => {
+            [row, col] = item.id.split(',').map(Number);
+            const className = letters[col] + (row + 1);
+            item.classList.add(className);
+            item.textContent = className;
+        });
+        return letters[col] + (row + 1);
+    }
+
+    function fetchDeviceStatuses() {
+        return fetch('./environmental-data-avg')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                const plantID = getQueryParameter('id');
+                const sensorType = '';
+                if(plantID){
+                    const datafilter = data.filter(plant => plant.id === plantID)
+                    displayFilteredData(datafilter, sensorType);
+                }
+                else{
+                    populatePlantNameOptions(data);
+                    SubmitHandler(data);
+                    displayFilteredData(data, sensorType);
+                }
+            })
+    }
+
+    async function convertIdToRowAndCol(item) {
+        console.log(item);
+        try {
+            const response = await fetch(`/plants/${item.plant_ID}`);
+            if (!response.ok) { throw new Error('Network response was not ok'); }
+            return await response.json();
+           }
+        catch (error) { console.error('There was a problem with the fetch id operation:', error); }
+
+    }
 function getQueryParameter(param) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(param);
 }
 
-fetch('/plants.json')
-// fetch('http://localhost:4286/data/GetAllData')
-    .then(response => response.json())
-    .then(data => {
-        const plantID = getQueryParameter('id');
-        if(plantID){
-            const datafilter = data.filter(plant => plant.id === plantID)
-            displayFilteredData(datafilter);
-        }
-        else{
-            populatePlantNameOptions(data);
-            SubmitHandler(data);
-            displayFilteredData(data);
-        }
-
-    })
-    .catch(error => console.error('Error fetching plant data:', error));
-
-function populatePlantNameOptions(data) {
+function populatePlantNameOptions(data,plants) {
     const plantNameSelect = document.getElementById('plant-name');
-    const uniqueNames = [...new Set(data.map(plant => plantName(plant.id)))];
-    uniqueNames.forEach(name => {
+    const uniqueNames = [...new Set(data.map(plant => plantName(plant.plant_ID, plants)))];
+    uniqueNames.forEach(async name => {
         const option = document.createElement('option');
         option.value = name;
         option.textContent = name;
@@ -66,15 +84,16 @@ function filterData(data, plantNameValue, sensorType, dateFrom, dateTo) {
 }
 
 
-function displayFilteredData(data, sensorType = '') {
+function displayFilteredData(data,sensorType = '') {
     const filteredPlantDataContainer = document.getElementById('filtered-plant-data');
     filteredPlantDataContainer.innerHTML = '';
 
-    data.forEach(plant => {
+        data.forEach(async plant => {
+        let DeviceID = await  convertIdToRowAndCol(plant);
         const plantRow = document.createElement('tr');
         plantRow.innerHTML = `
-            <td>${plantName(plant.id)}</td>
-            <td>${plant.device_id}</td>
+            <td>${plantName(plant.plant_ID)}</td>
+            <td>${`${DeviceID[0].row}, ${DeviceID[0].col}`}</td>
             <td>${sensorType === 'uv_radiation' || !sensorType ? plant.uv_radiation : ''}</td>
             <td>${sensorType === 'uv_radiation' || !sensorType ? plant.uv_radiation_max : ''}</td>
             <td>${sensorType === 'uv_radiation' || !sensorType ? plant.uv_radiation_min : ''}</td>
@@ -95,4 +114,4 @@ function displayFilteredData(data, sensorType = '') {
         filteredPlantDataContainer.appendChild(plantRow);
     });
 }
-
+    fetchDeviceStatuses();
